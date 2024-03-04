@@ -1,0 +1,11 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: './src/*.{js,ts,jsx,tsx}'
+      run: npx eslint {staged_files}
+    types:
+      glob: './src/*.{js,ts, jsx, tsx}'
+      run: npx tsc --noEmit
+    cpp-linter:
+      run: clang-format -i ./cpp/*.cpp ./cpp/*.h && git add .

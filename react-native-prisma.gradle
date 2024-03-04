@@ -1,0 +1,6 @@
+tasks.register('copyFolder', Copy) {
+    from "../../migrations"
+    into "src/main/assets/migrations"
+}
+
+preBuild.dependsOn(copyFolder)

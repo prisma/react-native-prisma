@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "migrations/20240117094901_init/migration.sql",
+      "sha1": "c2cba8c542661584c2409ac71985d902b25bdd71"
+    },
+    {
+      "path": "migrations/migration_lock.toml",
+      "sha1": "d31af1640ea175950b3b0e25f68481f74ef5d8ed"
+    }
+  ]
+}
