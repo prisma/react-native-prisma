@@ -1,5 +1,6 @@
-import { PrismaClient } from '../client/rn';
 import Chance from 'chance';
+
+import { PrismaClient } from '../client/rn';
 const chance = new Chance();
 
 const prisma = new PrismaClient({
