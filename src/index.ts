@@ -1,6 +1,7 @@
 import { NativeModules } from 'react-native';
 
 declare global {
+  // eslint-disable-next-line no-var
   var __PrismaProxy: PrismaProxy | undefined;
 }
 
@@ -46,7 +47,7 @@ type PrismaCreateOptions = {
   env: object | string;
 };
 
-type QueryEngineObject = {};
+type QueryEngineObject = object;
 
 type PrismaProxy = {
   create: (options: PrismaCreateOptions) => QueryEngineObject;
