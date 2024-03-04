@@ -1215,6 +1215,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/plugin-transform-object-assign@npm:^7.16.7":
+  version: 7.23.3
+  resolution: "@babel/plugin-transform-object-assign@npm:7.23.3"
+  dependencies:
+    "@babel/helper-plugin-utils": "npm:^7.22.5"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 17b8da5fe6cabc9f01adae9d57ad5a232a7535007249d737de3a120c73c63c330588ca5592419083d2b55df04c49b193d1ef5dbf071933fea11ac05022fd8716
+  languageName: node
+  linkType: hard
+
 "@babel/plugin-transform-object-rest-spread@npm:^7.12.13, @babel/plugin-transform-object-rest-spread@npm:^7.24.0":
   version: 7.24.0
   resolution: "@babel/plugin-transform-object-rest-spread@npm:7.24.0"
@@ -1674,7 +1685,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-typescript@npm:^7.12.12, @babel/preset-typescript@npm:^7.13.0, @babel/preset-typescript@npm:^7.17.12":
+"@babel/preset-typescript@npm:^7.12.12, @babel/preset-typescript@npm:^7.13.0, @babel/preset-typescript@npm:^7.16.7, @babel/preset-typescript@npm:^7.17.12":
   version: 7.23.3
   resolution: "@babel/preset-typescript@npm:7.23.3"
   dependencies:
@@ -3084,13 +3095,13 @@ __metadata:
 
 "@prisma/client@file:../../prisma/packages/client::locator=react-native-prisma-example%40workspace%3Aexample":
   version: 0.0.0
-  resolution: "@prisma/client@file:../../prisma/packages/client#../../prisma/packages/client::hash=008758&locator=react-native-prisma-example%40workspace%3Aexample"
+  resolution: "@prisma/client@file:../../prisma/packages/client#../../prisma/packages/client::hash=81b487&locator=react-native-prisma-example%40workspace%3Aexample"
   peerDependencies:
     prisma: "*"
   peerDependenciesMeta:
     prisma:
       optional: true
-  checksum: fbff0488a974edd46b2c18a44ad5a2f9e698e7ecf87b10a9f9e7fe4a9d70417e3cbff5d440cec1436d6f37d108a67228c5af7a935e9f83e9951011e899d08ff9
+  checksum: 0e173c6cd6d96f933284e099add1745ed53c56937780bafa298f91dd97742a1ec154e0f8e14a0c7eb4b7556f3a0df08ed40648262bdfec4e14d77086cdbe41e1
   languageName: node
   linkType: hard
 
@@ -13846,6 +13857,7 @@ __metadata:
     react-native-http-bridge-refurbished: "npm:^1.2.9"
     react-native-network-info: "npm:^5.2.1"
     react-native-quick-base64: "npm:^2.0.8"
+    react-native-reanimated: "npm:^3.7.2"
     react-native-url-polyfill: "npm:^2.0.0"
     tailwindcss: "npm:^3.4.0"
     text-encoding: "npm:^0.7.0"
@@ -13861,6 +13873,27 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 783c42dd1b3701e211c8afe54781889f113b7fb71fcf5b923313a61368a42be52ec0654e8f34e3e51a8fb6c62a1c7ec7491216631c77177986d3ed52d18111f6
+  languageName: node
+  linkType: hard
+
+"react-native-reanimated@npm:^3.7.2":
+  version: 3.7.2
+  resolution: "react-native-reanimated@npm:3.7.2"
+  dependencies:
+    "@babel/plugin-transform-object-assign": "npm:^7.16.7"
+    "@babel/preset-typescript": "npm:^7.16.7"
+    convert-source-map: "npm:^2.0.0"
+    invariant: "npm:^2.2.4"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+    "@babel/plugin-proposal-nullish-coalescing-operator": ^7.0.0-0
+    "@babel/plugin-proposal-optional-chaining": ^7.0.0-0
+    "@babel/plugin-transform-arrow-functions": ^7.0.0-0
+    "@babel/plugin-transform-shorthand-properties": ^7.0.0-0
+    "@babel/plugin-transform-template-literals": ^7.0.0-0
+    react: "*"
+    react-native: "*"
+  checksum: bc9aad8433e7435eb7ed5330b698f41bea42d4f829a0ee3d92e0da36a5f2736fdd0fd4fa65ff8840a666d0f9dde9a3b001169e3550571f69e2a852dfc346c421
   languageName: node
   linkType: hard
 

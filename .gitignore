@@ -85,3 +85,6 @@ android/jniLibs
 
 # config plugin output
 !plugin/build
+
+# development client
+example/client/*
