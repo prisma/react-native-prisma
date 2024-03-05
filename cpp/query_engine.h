@@ -42,10 +42,6 @@ typedef struct ConstructorOptions {
   void (*log_callback)(const char *, const char *);
 } ConstructorOptions;
 
-typedef void (*UpdateHookCallback)(const void *user_data, int operation_type,
-                                   const char *database, const char *table,
-                                   long long row_id);
-
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
@@ -89,8 +85,6 @@ int prisma_apply_pending_migrations(struct QueryEngine *qe,
                                     char **error_string_ptr);
 
 int prisma_destroy(struct QueryEngine *qe);
-
-void prisma_update_hook(struct QueryEngine *qe, UpdateHookCallback hook);
 
 #ifdef __cplusplus
 } // extern "C"
