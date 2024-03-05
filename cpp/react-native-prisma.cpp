@@ -3,40 +3,19 @@
 #include "ThreadPool.h"
 #include "macros.h"
 #include "query_engine.h"
+#include "utils.h"
 #include <iostream>
-#include <random>
 #include <unordered_map>
-
 namespace prisma {
 
 namespace jsi = facebook::jsi;
 
-std::string basePath;
+static std::string base_path;
 std::string migrations_path;
 std::shared_ptr<react::CallInvoker> call_invoker;
 std::unordered_map<std::string, std::shared_ptr<QueryEngineHostObject>>
     engine_map;
 ThreadPool thread_pool;
-
-// Semi random function, more than enough for our purposes
-std::string get_uuid() {
-  static std::random_device dev;
-  static std::mt19937 rng(dev());
-
-  std::uniform_int_distribution<int> dist(0, 15);
-
-  const char *v = "0123456789abcdef";
-  const bool dash[] = {0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0};
-
-  std::string res;
-  for (int i = 0; i < 16; i++) {
-    if (dash[i])
-      res += "-";
-    res += v[dist(rng)];
-    res += v[dist(rng)];
-  }
-  return res;
-}
 
 extern void log_callback(const char *id, const char *msg) {
   if (engine_map.count(id)) {
@@ -45,12 +24,19 @@ extern void log_callback(const char *id, const char *msg) {
   }
 }
 
+extern void update_hook_callback(const void *data, int operation,
+                                 const char *database, const char *table,
+                                 long long row_id) {
+  std::cout << "update_hook_callback" << std::endl;
+}
+
 void install_cxx(jsi::Runtime &rt,
-                 std::shared_ptr<react::CallInvoker> jsCallInvoker,
-                 const char *basePathStr, const char *migrationsPath) {
-  basePath = std::string(basePathStr);
-  migrations_path = std::string(migrationsPath);
-  call_invoker = jsCallInvoker;
+                 std::shared_ptr<react::CallInvoker> call_invoker_param,
+                 const char *base_path_param,
+                 const char *migrations_path_param) {
+  base_path = std::string(base_path_param);
+  migrations_path = std::string(migrations_path_param);
+  call_invoker = call_invoker_param;
 
   auto create = HOSTFN("create", 1) {
     // Rust will return a pointer to the internal struct, C++ has nothing to do
@@ -78,7 +64,7 @@ void install_cxx(jsi::Runtime &rt,
     ConstructorOptions options =
         ConstructorOptions{.id = id.c_str(),
                            .datamodel = datamodel.c_str(),
-                           .base_path = basePath.c_str(),
+                           .base_path = base_path.c_str(),
                            .log_level = log_level.c_str(),
                            .log_queries = log_queries,
                            .datasource_overrides = datasource_overrides.c_str(),
@@ -271,6 +257,15 @@ void install_cxx(jsi::Runtime &rt,
     return {};
   });
 
+  auto update_hook = HOSTFN("update_hook", 1) {
+    std::shared_ptr<QueryEngineHostObject> qe =
+        args[0].asObject(rt).asHostObject<QueryEngineHostObject>(rt);
+
+    prisma_update_hook(qe->engine, &update_hook_callback);
+
+    return {};
+  });
+
   jsi::Object module = jsi::Object(rt);
   module.setProperty(rt, "create", std::move(create));
   module.setProperty(rt, "connect", std::move(connect));
@@ -283,6 +278,7 @@ void install_cxx(jsi::Runtime &rt,
   module.setProperty(rt, "disconnect", std::move(disconnect));
   module.setProperty(rt, "applyPendingMigrations",
                      std::move(apply_pending_migrations));
+  module.setProperty(rt, "updateHook", std::move(update_hook));
 
   rt.global().setProperty(rt, "__PrismaProxy", std::move(module));
 }
