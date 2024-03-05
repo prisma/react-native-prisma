@@ -24,12 +24,6 @@ extern void log_callback(const char *id, const char *msg) {
   }
 }
 
-extern void update_hook_callback(const void *data, int operation,
-                                 const char *database, const char *table,
-                                 long long row_id) {
-  std::cout << "update_hook_callback" << std::endl;
-}
-
 void install_cxx(jsi::Runtime &rt,
                  std::shared_ptr<react::CallInvoker> call_invoker_param,
                  const char *base_path_param,
@@ -257,15 +251,6 @@ void install_cxx(jsi::Runtime &rt,
     return {};
   });
 
-  auto update_hook = HOSTFN("update_hook", 1) {
-    std::shared_ptr<QueryEngineHostObject> qe =
-        args[0].asObject(rt).asHostObject<QueryEngineHostObject>(rt);
-
-    prisma_update_hook(qe->engine, &update_hook_callback);
-
-    return {};
-  });
-
   jsi::Object module = jsi::Object(rt);
   module.setProperty(rt, "create", std::move(create));
   module.setProperty(rt, "connect", std::move(connect));
@@ -278,7 +263,6 @@ void install_cxx(jsi::Runtime &rt,
   module.setProperty(rt, "disconnect", std::move(disconnect));
   module.setProperty(rt, "applyPendingMigrations",
                      std::move(apply_pending_migrations));
-  module.setProperty(rt, "updateHook", std::move(update_hook));
 
   rt.global().setProperty(rt, "__PrismaProxy", std::move(module));
 }

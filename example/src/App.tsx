@@ -8,9 +8,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Button } from './Button';
 import { NetworkInfo } from 'react-native-network-info';
 import { atob, btoa } from 'react-native-quick-base64';
+
+import { Button } from './Button';
 import 'react-native-url-polyfill/auto';
 import '../global.css';
 import {
@@ -34,23 +35,25 @@ export default function App() {
     NetworkInfo.getIPAddress().then((ip) => {
       setIP(`${ip}:3000`);
     });
+
+    queryUsers();
   }, []);
 
   const createUser = async () => {
-    let start = performance.now();
+    const start = performance.now();
 
     await createRandomUser();
 
-    let end = performance.now();
+    const end = performance.now();
     setPrismaTime(end - start);
   };
 
   const queryUsers = async () => {
-    let start = performance.now();
+    const start = performance.now();
 
     const res = await queryAllUsers();
 
-    let end = performance.now();
+    const end = performance.now();
     setEngineResponse(res);
     setPrismaTime(end - start);
   };
