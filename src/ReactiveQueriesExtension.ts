@@ -5,16 +5,24 @@ const Prisma = PrismaDefault.Prisma;
 
 export function reactiveQueriesExtension() {
   return PrismaDefault.Prisma.defineExtension((client: any) => {
-    const subscribedQueries = new Map<
+    const subscribedQueries: Record<
       string,
-      { query: () => any; callbacks: ((value: any) => any)[] }
-    >();
+      {
+        callbacks: Record<string, (data: any) => void>;
+        query: () => Promise<any>;
+      }
+    > = {};
 
     const refreshSubscriptions = async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      for (const [_, { callbacks, query }] of subscribedQueries) {
-        const data = await query();
-        callbacks.forEach((c) => c(data));
+      for (const key in subscribedQueries) {
+        const subscription = subscribedQueries[key]!;
+
+        const data = await subscription.query();
+
+        for (const callbackKey in subscription.callbacks) {
+          const callback = subscription.callbacks[callbackKey]!;
+          callback(data);
+        }
       }
     };
 
@@ -31,16 +39,26 @@ export function reactiveQueriesExtension() {
 
             useEffect(() => {
               const key = `${model} :: findMany :: ${JSON.stringify(args)}`;
-              if (!subscribedQueries.has(key)) {
-                subscribedQueries.set(key, {
-                  callbacks: [setEngineResponse],
+              const callbackKey = `${model} :: findMany :: ${JSON.stringify(
+                args
+              )} :: ${Math.random()}`;
+              if (subscribedQueries[key] != null) {
+                subscribedQueries[key]!.callbacks[callbackKey] =
+                  setEngineResponse;
+              } else {
+                subscribedQueries[key] = {
+                  callbacks: {
+                    [callbackKey]: setEngineResponse,
+                  },
                   query: () => model.findMany(args),
-                });
+                };
               }
 
               prismaPromise.then(setEngineResponse);
 
-              return () => {};
+              return () => {
+                delete subscribedQueries[key]!.callbacks[callbackKey];
+              };
             }, []);
 
             return engineResponse;
