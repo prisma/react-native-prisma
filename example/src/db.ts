@@ -1,15 +1,18 @@
+import { reactiveQueriesExtension } from '@op-engineering/react-native-prisma';
 import Chance from 'chance';
 
 import { PrismaClient } from '../client/rn';
 const chance = new Chance();
 
-const prisma = new PrismaClient({
+const basePrisma = new PrismaClient({
   log: [{ emit: 'event', level: 'query' }],
 });
 
 // You should always call this at the start of the application
 // failure to migrate might leave you with a non working app version
-prisma.$applyPendingMigrations();
+basePrisma.$applyPendingMigrations();
+
+export const prisma = basePrisma.$extends(reactiveQueriesExtension());
 
 export async function queryAllPosts() {
   return await prisma.post.findMany();
@@ -66,4 +69,8 @@ export async function rollbackTest() {
       },
     }),
   ]);
+}
+
+export async function deleteUsers() {
+  return await prisma.user.deleteMany();
 }

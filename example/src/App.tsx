@@ -11,15 +11,10 @@ import {
 import { NetworkInfo } from 'react-native-network-info';
 import { atob, btoa } from 'react-native-quick-base64';
 
-import { Button } from './Button';
 import 'react-native-url-polyfill/auto';
 import '../global.css';
-import {
-  createPost,
-  createRandomUser,
-  queryAllPosts,
-  queryAllUsers,
-} from './db';
+import { Button } from './Button';
+import { createRandomUser, deleteUsers, prisma } from './db';
 import './server';
 
 // global.TextEncoder = require('text-encoding').TextEncoder;
@@ -27,7 +22,7 @@ global.atob = atob;
 global.btoa = btoa;
 
 export default function App() {
-  const [engineResponse, setEngineResponse] = useState<any>('');
+  // const [engineResponse, setEngineResponse] = useState<any>('');
   const [prismaTime, setPrismaTime] = useState(0);
   const [IP, setIP] = useState<string>('');
 
@@ -35,8 +30,6 @@ export default function App() {
     NetworkInfo.getIPAddress().then((ip) => {
       setIP(`${ip}:3000`);
     });
-
-    queryUsers();
   }, []);
 
   const createUser = async () => {
@@ -48,25 +41,7 @@ export default function App() {
     setPrismaTime(end - start);
   };
 
-  const queryUsers = async () => {
-    const start = performance.now();
-
-    const res = await queryAllUsers();
-
-    const end = performance.now();
-    setEngineResponse(res);
-    setPrismaTime(end - start);
-  };
-
-  const createPostCb = async () => {
-    const res = await createPost();
-    setEngineResponse(res);
-  };
-
-  const queryAllPostsCb = async () => {
-    const res = await queryAllPosts();
-    setEngineResponse(res);
-  };
+  const engineResponse = prisma.user.useFindMany();
 
   const copyIP = () => {
     Clipboard.setString(IP);
@@ -94,9 +69,10 @@ export default function App() {
         </Text>
       </ScrollView>
       <Button title="Create user" callback={createUser} />
-      <Button title="Create post" callback={createPostCb} />
-      <Button title="Get users" callback={queryUsers} />
-      <Button title="Get posts" callback={queryAllPostsCb} />
+      <Button title="Delete users" callback={deleteUsers} />
+
+      {/* <Button title="Create post" callback={createPostCb} />
+      <Button title="Get posts" callback={queryAllPostsCb} /> */}
     </SafeAreaView>
   );
 }
