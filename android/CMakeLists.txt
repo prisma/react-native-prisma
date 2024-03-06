@@ -18,6 +18,8 @@ add_library(
     ../cpp/ThreadPool.cpp
     ../cpp/ThreadPool.h
     ../cpp/query_engine.h
+    ../cpp/utils.h
+    ../cpp/utils.cpp
     cpp-adapter.cpp
 )
 
