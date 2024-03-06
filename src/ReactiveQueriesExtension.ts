@@ -63,28 +63,34 @@ export const reactiveQueriesExtension = Prisma.defineExtension((client) => {
 
           return engineResponse;
         },
-        async create(args: any) {
+        async create<T, A>(
+          this: T,
+          args?: Prisma.Exact<A, Prisma.Args<T, 'create'>>
+        ): Promise<Prisma.Result<T, A, 'create'>> {
           const ctx = Prisma.getExtensionContext(this);
-          const model = (ctx.$parent as any)[ctx.$name!];
-          const prismaPromise = model.create(args);
+          const prismaPromise = (ctx as any).create(args);
           const data = await prismaPromise;
           await refreshSubscriptions();
 
           return data;
         },
-        async delete(args: any) {
+        async delete<T, A>(
+          this: T,
+          args?: Prisma.Exact<A, Prisma.Args<T, 'delete'>>
+        ): Promise<Prisma.Result<T, A, 'delete'>> {
           const ctx = Prisma.getExtensionContext(this);
-          const model = (ctx.$parent as any)[ctx.$name!];
-          const prismaPromise = model.delete(args);
+          const prismaPromise = (ctx as any).delete(args);
           const data = await prismaPromise;
           await refreshSubscriptions();
 
           return data;
         },
-        async deleteMany(args?: any) {
+        async deleteMany<T, A>(
+          this: T,
+          args?: Prisma.Exact<A, Prisma.Args<T, 'deleteMany'>>
+        ): Promise<Prisma.Result<T, A, 'deleteMany'>> {
           const ctx = Prisma.getExtensionContext(this);
-          const model = (ctx.$parent as any)[ctx.$name!];
-          const prismaPromise = model.deleteMany(args);
+          const prismaPromise = (ctx as any).deleteMany(args);
           const data = await prismaPromise;
           await refreshSubscriptions();
 
