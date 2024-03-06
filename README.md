@@ -49,3 +49,33 @@ For expo this process is automated into prebuild. Modify your `app.json` by addi
   }
 }
 ```
+
+## Reactive queries
+
+This packages contains an extension to the prisma client that allows you to use reactive queries. Use at your own convinience and care since it might introduce large re-renders in your app.
+
+```ts
+import { PrismaClient } from '@prisma/client';
+import { reactiveQueriesExtension } from 'react-native-prisma';
+
+const baseClient = new PrismaClient();
+
+export const extendedClient = baseClient.$extends(reactiveQueriesExtension);
+```
+
+Then in your React component you can use the hook:
+
+```tsx
+import {Text} from 'react-native';
+import {extendedClient} from './myDbModule';
+
+export default function App {
+
+  // Will automatically re-render the component with new data
+  const engineResponse = extendedClient.user.useFindMany();
+
+  return (
+    <Text>{engineResponse}</Text>
+  )
+}
+```

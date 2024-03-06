@@ -15,7 +15,7 @@ const basePrisma = new PrismaClient({
 // failure to migrate might leave you with a non working app version
 basePrisma.$applyPendingMigrations();
 
-export const prisma = basePrisma.$extends(reactiveQueriesExtension());
+export const prisma = basePrisma.$extends(reactiveQueriesExtension);
 
 export async function queryAllPosts() {
   return await prisma.post.findMany();
