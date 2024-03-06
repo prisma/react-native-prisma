@@ -27,10 +27,12 @@ export const reactiveQueriesExtension = Prisma.defineExtension((client) => {
     name: 'prisma-reactive-queries',
     model: {
       $allModels: {
-        useFindMany<T>(this: T, args?: Prisma.Args<T, 'findMany'>) {
+        useFindMany<T, A>(
+          this: T,
+          args?: Prisma.Exact<A, Prisma.Args<T, 'findMany'>>
+        ): Prisma.Result<T, A, 'findMany'> {
           const ctx = Prisma.getExtensionContext(this);
           const model = ctx.$name!;
-          // const model = ctx.$parent[ctx.$name!];
           const prismaPromise = (ctx as any).findMany(args);
 
           const [engineResponse, setEngineResponse] = useState<any>();
