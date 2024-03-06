@@ -1,6 +1,7 @@
 import { reactiveQueriesExtension } from '@op-engineering/react-native-prisma';
-import { PrismaClient } from '@prisma/client/rn';
 import Chance from 'chance';
+
+import { PrismaClient } from '../node_modules/.prisma/client/rn';
 
 const chance = new Chance();
 
