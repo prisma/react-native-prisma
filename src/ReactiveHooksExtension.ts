@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client/rn';
+import { useEffect, useState } from 'react';
 
-export const reactiveQueriesExtension = Prisma.defineExtension((client) => {
+export const reactiveHooksExtension = Prisma.defineExtension((client) => {
   const subscribedQueries: Record<
     string,
     {
@@ -23,92 +24,116 @@ export const reactiveQueriesExtension = Prisma.defineExtension((client) => {
   };
 
   return client.$extends({
-    name: 'prisma-reactive-queries-extension',
+    name: 'prisma-reactive-hooks-extension',
     model: {
       $allModels: {
-        findMany<T, A>(
+        useFindMany<T, A>(
           this: T,
-          cb: (data: Prisma.Result<T, A, 'findMany'>) => void,
           args?: Prisma.Exact<A, Prisma.Args<T, 'findMany'>>
-        ): () => void {
+        ): Prisma.Result<T, A, 'findMany'> {
           const ctx = Prisma.getExtensionContext(this);
           const model = (ctx.$parent as any)[ctx.$name!];
+          const prismaPromise = model.findMany(args);
 
-          const key = `${model} :: findMany :: ${JSON.stringify(args)}`;
-          const callbackKey = `${model} :: findMany :: ${JSON.stringify(
-            args
-          )} :: ${Math.random()}`;
+          const [engineResponse, setEngineResponse] = useState<any>();
 
-          if (subscribedQueries[key] != null) {
-            subscribedQueries[key]!.callbacks[callbackKey] = cb;
-          } else {
-            subscribedQueries[key] = {
-              callbacks: {
-                [callbackKey]: cb,
-              },
-              query: () => model.findMany(args),
+          useEffect(() => {
+            const key = `${model} :: findMany :: ${JSON.stringify(args)}`;
+            const callbackKey = `${model} :: findMany :: ${JSON.stringify(
+              args
+            )} :: ${Math.random()}`;
+            if (subscribedQueries[key] != null) {
+              subscribedQueries[key]!.callbacks[callbackKey] =
+                setEngineResponse;
+            } else {
+              subscribedQueries[key] = {
+                callbacks: {
+                  [callbackKey]: setEngineResponse,
+                },
+                query: () => model.findMany(args),
+              };
+            }
+
+            prismaPromise.then(setEngineResponse);
+
+            return () => {
+              delete subscribedQueries[key]!.callbacks[callbackKey];
             };
-          }
+          }, []);
 
-          refreshSubscriptions();
-
-          return () => {
-            delete subscribedQueries[key]!.callbacks[callbackKey];
-          };
+          return engineResponse;
         },
-        findUnique<T, A>(
+        useFindUnique<T, A>(
           this: T,
-          cb: (data: Prisma.Result<T, A, 'findMany'>) => void,
           args?: Prisma.Exact<A, Prisma.Args<T, 'findUnique'>>
-        ): () => void {
+        ): Prisma.Result<T, A, 'findUnique'> {
           const ctx = Prisma.getExtensionContext(this);
           const model = (ctx.$parent as any)[ctx.$name!];
+          const prismaPromise = model.findUnique(args);
 
-          const key = `${model} :: findUnique :: ${JSON.stringify(args)}`;
-          const callbackKey = `${model} :: findUnique :: ${JSON.stringify(
-            args
-          )} :: ${Math.random()}`;
-          if (subscribedQueries[key] != null) {
-            subscribedQueries[key]!.callbacks[callbackKey] = cb;
-          } else {
-            subscribedQueries[key] = {
-              callbacks: {
-                [callbackKey]: cb,
-              },
-              query: () => model.findUnique(args),
+          const [engineResponse, setEngineResponse] = useState<any>();
+
+          useEffect(() => {
+            const key = `${model} :: findUnique :: ${JSON.stringify(args)}`;
+            const callbackKey = `${model} :: findUnique :: ${JSON.stringify(
+              args
+            )} :: ${Math.random()}`;
+            if (subscribedQueries[key] != null) {
+              subscribedQueries[key]!.callbacks[callbackKey] =
+                setEngineResponse;
+            } else {
+              subscribedQueries[key] = {
+                callbacks: {
+                  [callbackKey]: setEngineResponse,
+                },
+                query: () => model.findUnique(args),
+              };
+            }
+
+            prismaPromise.then(setEngineResponse);
+
+            return () => {
+              delete subscribedQueries[key]!.callbacks[callbackKey];
             };
-          }
+          }, []);
 
-          return () => {
-            delete subscribedQueries[key]!.callbacks[callbackKey];
-          };
+          return engineResponse;
         },
-        findFirst<T, A>(
+        useFindFirst<T, A>(
           this: T,
-          cb: (data: Prisma.Result<T, A, 'findMany'>) => void,
           args?: Prisma.Exact<A, Prisma.Args<T, 'findFirst'>>
-        ): () => void {
+        ): Prisma.Result<T, A, 'findFirst'> {
           const ctx = Prisma.getExtensionContext(this);
           const model = (ctx.$parent as any)[ctx.$name!];
+          const prismaPromise = model.findFirst(args);
 
-          const key = `${model} :: findUnique :: ${JSON.stringify(args)}`;
-          const callbackKey = `${model} :: findUnique :: ${JSON.stringify(
-            args
-          )} :: ${Math.random()}`;
-          if (subscribedQueries[key] != null) {
-            subscribedQueries[key]!.callbacks[callbackKey] = cb;
-          } else {
-            subscribedQueries[key] = {
-              callbacks: {
-                [callbackKey]: cb,
-              },
-              query: () => model.findUnique(args),
+          const [engineResponse, setEngineResponse] = useState<any>();
+
+          useEffect(() => {
+            const key = `${model} :: findFirst :: ${JSON.stringify(args)}`;
+            const callbackKey = `${model} :: findFirst :: ${JSON.stringify(
+              args
+            )} :: ${Math.random()}`;
+            if (subscribedQueries[key] != null) {
+              subscribedQueries[key]!.callbacks[callbackKey] =
+                setEngineResponse;
+            } else {
+              subscribedQueries[key] = {
+                callbacks: {
+                  [callbackKey]: setEngineResponse,
+                },
+                query: () => model.findFirst(args),
+              };
+            }
+
+            prismaPromise.then(setEngineResponse);
+
+            return () => {
+              delete subscribedQueries[key]!.callbacks[callbackKey];
             };
-          }
+          }, []);
 
-          return () => {
-            delete subscribedQueries[key]!.callbacks[callbackKey];
-          };
+          return engineResponse;
         },
         async create<T, A>(
           this: T,

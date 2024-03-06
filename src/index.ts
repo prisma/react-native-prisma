@@ -1,4 +1,5 @@
 import { NativeModules } from 'react-native';
+export { reactiveHooksExtension } from './ReactiveHooksExtension';
 export { reactiveQueriesExtension } from './ReactiveQueriesExtension';
 
 declare global {

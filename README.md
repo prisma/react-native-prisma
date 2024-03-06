@@ -56,11 +56,11 @@ This packages contains an extension to the prisma client that allows you to use 
 
 ```ts
 import { PrismaClient } from '@prisma/client';
-import { reactiveQueriesExtension } from 'react-native-prisma';
+import { reactiveHooksExtension } from 'react-native-prisma';
 
 const baseClient = new PrismaClient();
 
-export const extendedClient = baseClient.$extends(reactiveQueriesExtension);
+export const extendedClient = baseClient.$extends(reactiveHooksExtension);
 ```
 
 Then in your React component you can use the hook:
@@ -72,10 +72,37 @@ import {extendedClient} from './myDbModule';
 export default function App {
 
   // Will automatically re-render the component with new data
-  const engineResponse = extendedClient.user.useFindMany();
+  const users = extendedClient.user.useFindMany();
 
   return (
-    <Text>{engineResponse}</Text>
+    <Text>{users}</Text>
   )
 }
+```
+
+Bare in mind, for the reactive queries to work you have to use the extended client to modify the data:
+
+```ts
+extendedClient.user.create({ ...userData });
+```
+
+There are several hooks you can use for your reactive queries:
+
+```ts
+useFindMany();
+useFindFirst();
+useFindUnique();
+```
+
+### Non hook reactive queries
+
+It is also possible to use callbacks for this queries in case you are not using hooks, but you still want to get notified when data changes
+
+```ts
+import { PrismaClient } from '@prisma/client';
+import { reactiveQueriesExtension } from 'react-native-prisma';
+
+const baseClient = new PrismaClient();
+
+export const extendedClient = baseClient.$extends(reactiveQueriesExtension);
 ```

@@ -1,4 +1,7 @@
-import { reactiveQueriesExtension } from '@op-engineering/react-native-prisma';
+import {
+  reactiveHooksExtension,
+  reactiveQueriesExtension,
+} from '@op-engineering/react-native-prisma';
 import Chance from 'chance';
 
 // metro crawls through the parent folder first, which means it doesn't find the generated classes
@@ -15,14 +18,11 @@ const basePrisma = new PrismaClient({
 // failure to migrate might leave you with a non working app version
 basePrisma.$applyPendingMigrations();
 
-export const prisma = basePrisma.$extends(reactiveQueriesExtension);
-
-export async function queryAllPosts() {
-  return await prisma.post.findMany();
-}
+// Examples of a reactive client for REACT
+export const hooksPrisma = basePrisma.$extends(reactiveHooksExtension);
 
 export async function createRandomUser() {
-  await prisma.user.create({
+  await hooksPrisma.user.create({
     data: {
       email: chance.email(),
       name: chance.name(),
@@ -30,50 +30,28 @@ export async function createRandomUser() {
   });
 }
 
-export async function createPost() {
-  const user = await prisma.user.findFirst();
-
-  return await prisma.post.create({
-    data: {
-      title: chance.string(),
-      authorId: user!.id,
-    },
-  });
-}
-
-export async function queryAllUsers() {
-  return await prisma.user.findMany({
-    select: {
-      name: true,
-      email: true,
-      nick: true,
-    },
-  });
-}
-
-export async function transactionTest() {
-  return await prisma.$transaction([
-    prisma.user.findMany(),
-    prisma.user.count(),
-  ]);
-}
-
-// export async function rollbackTest() {
-//   return await prisma.$transaction([
-//     prisma.user.create({
-//       data: {
-//         email: chance.email(),
-//       },
-//     }),
-//     prisma.user.create({
-//       data: {
-//         id: 1,
-//         email: 'ospfranco@gmail.com',
-//       },
-//     }),
-//   ]);
-// }
-
 export async function deleteUsers() {
-  return await prisma.user.deleteMany();
+  return await hooksPrisma.user.deleteMany();
 }
+
+// A generic reactive client
+const reactivePrisma = basePrisma.$extends(reactiveQueriesExtension);
+
+// create a reactive query
+const unsubscriber = reactivePrisma.user.findMany((data) => {
+  console.log(data);
+});
+
+export async function createRandomUserGeneric() {
+  await reactivePrisma.user.create({
+    data: {
+      email: chance.email(),
+      name: chance.name(),
+    },
+  });
+}
+
+// @ts-expect-error
+module.hot?.dispose(() => {
+  unsubscriber();
+});

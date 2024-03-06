@@ -14,15 +14,19 @@ import { atob, btoa } from 'react-native-quick-base64';
 import 'react-native-url-polyfill/auto';
 import '../global.css';
 import { Button } from './Button';
-import { createRandomUser, deleteUsers, prisma } from './db';
 import './server';
+import {
+  hooksPrisma,
+  createRandomUser,
+  deleteUsers,
+  createRandomUserGeneric,
+} from './db';
 
 // global.TextEncoder = require('text-encoding').TextEncoder;
 global.atob = atob;
 global.btoa = btoa;
 
 export default function App() {
-  // const [engineResponse, setEngineResponse] = useState<any>('');
   const [prismaTime, setPrismaTime] = useState(0);
   const [IP, setIP] = useState<string>('');
 
@@ -41,7 +45,7 @@ export default function App() {
     setPrismaTime(end - start);
   };
 
-  const engineResponse = prisma.user.useFindMany();
+  const users = hooksPrisma.user.useFindMany();
 
   const copyIP = () => {
     Clipboard.setString(IP);
@@ -65,14 +69,12 @@ export default function App() {
           <Text className="text-white">{prismaTime.toFixed(0)}ms</Text>
         </View>
         <Text className="text-white bg-neutral-800 border rounded-lg p-4 border-neutral-700">
-          {JSON.stringify(engineResponse, null, 4)}
+          {JSON.stringify(users, null, 4)}
         </Text>
       </ScrollView>
       <Button title="Create user" callback={createUser} />
       <Button title="Delete users" callback={deleteUsers} />
-
-      {/* <Button title="Create post" callback={createPostCb} />
-      <Button title="Get posts" callback={queryAllPostsCb} /> */}
+      <Button title="create generic user" callback={createRandomUserGeneric} />
     </SafeAreaView>
   );
 }
