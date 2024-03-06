@@ -1,4 +1,4 @@
-import { ReactiveQueriesExtension } from '@op-engineering/react-native-prisma';
+import { reactiveQueriesExtension } from '@op-engineering/react-native-prisma';
 import Chance from 'chance';
 
 import { PrismaClient } from '../client/rn';
@@ -12,7 +12,7 @@ const basePrisma = new PrismaClient({
 // failure to migrate might leave you with a non working app version
 basePrisma.$applyPendingMigrations();
 
-export const prisma = basePrisma.$extends(ReactiveQueriesExtension);
+export const prisma = basePrisma.$extends(reactiveQueriesExtension());
 
 export async function queryAllPosts() {
   return await prisma.post.findMany();
