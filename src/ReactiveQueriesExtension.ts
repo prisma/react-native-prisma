@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client/rn';
 import { useEffect, useState } from 'react';
 
 export function reactiveQueriesExtension() {

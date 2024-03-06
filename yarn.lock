@@ -3022,12 +3022,11 @@ __metadata:
   resolution: "@op-engineering/react-native-prisma@workspace:."
   dependencies:
     "@evilmartians/lefthook": "npm:^1.5.0"
-    "@prisma/client": "npm:5.10.2"
+    "@prisma/client": ../prisma/packages/client
     "@react-native/eslint-config": "npm:^0.72.2"
     "@release-it/conventional-changelog": "npm:^5.0.0"
     "@types/jest": "npm:^28.1.2"
     "@types/react": "npm:~17.0.21"
-    "@types/react-native": "npm:0.70.0"
     del-cli: "npm:^5.0.0"
     eslint: "npm:^8.4.1"
     eslint-config-prettier: "npm:^8.5.0"
@@ -3044,6 +3043,7 @@ __metadata:
     turbo: "npm:^1.10.7"
     typescript: "npm:^5.0.2"
   peerDependencies:
+    "@prisma/client": "*"
     expo: ">=49.0.0"
     react: "*"
     react-native: "*"
@@ -3106,15 +3106,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:5.10.2":
-  version: 5.10.2
-  resolution: "@prisma/client@npm:5.10.2"
+"@prisma/client@file:../prisma/packages/client::locator=%40op-engineering%2Freact-native-prisma%40workspace%3A.":
+  version: 0.0.0
+  resolution: "@prisma/client@file:../prisma/packages/client#../prisma/packages/client::hash=ebbffa&locator=%40op-engineering%2Freact-native-prisma%40workspace%3A."
   peerDependencies:
     prisma: "*"
   peerDependenciesMeta:
     prisma:
       optional: true
-  checksum: 10/c608d872ed428fbdfd16fea6dbe313134901f02a12b75887384001718ae8d14e58b01f6968f9f4bdc362a5ad54ea56e7b7c905b4ac8022af1845f588ded50124
+  checksum: 10/0c41aee43dbd523f133ca97f68f5bb82817a0a60b6a780c0cf35ae888b8dacc10755cf5435b5da05113ae2da7bd227e99f1073328cc3d52efcfcfe67b5304af3
   languageName: node
   linkType: hard
 
@@ -4020,15 +4020,6 @@ __metadata:
   dependencies:
     "@types/react": "npm:*"
   checksum: 10/98eb760ce78f1016d97c70f605f0b1a53873a548d3c2192b40c897f694fd9c8bb12baeada16581a9c7b26f5022c1d2613547be98284d8f1b82d1611b1e3e7df0
-  languageName: node
-  linkType: hard
-
-"@types/react-native@npm:0.70.0":
-  version: 0.70.0
-  resolution: "@types/react-native@npm:0.70.0"
-  dependencies:
-    "@types/react": "npm:*"
-  checksum: 10/d6dae8f4fb9f4d80d33188f85de901415749c3704b09ede432c7e055f4115af2db241efa11e2556a2d22110b0500720d9eead8ed43d8fc84445c8e77b4cc6abf
   languageName: node
   linkType: hard
 
