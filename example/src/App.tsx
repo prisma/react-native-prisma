@@ -19,7 +19,7 @@ import {
   hooksPrisma,
   createRandomUser,
   deleteUsers,
-  createRandomUserGeneric,
+  // createRandomUserGeneric,
 } from './db';
 
 // global.TextEncoder = require('text-encoding').TextEncoder;
@@ -74,7 +74,7 @@ export default function App() {
       </ScrollView>
       <Button title="Create user" callback={createUser} />
       <Button title="Delete users" callback={deleteUsers} />
-      <Button title="create generic user" callback={createRandomUserGeneric} />
+      {/* <Button title="create generic user" callback={createRandomUserGeneric} /> */}
     </SafeAreaView>
   );
 }
