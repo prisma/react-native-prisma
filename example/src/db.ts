@@ -1,6 +1,8 @@
 import { reactiveQueriesExtension } from '@op-engineering/react-native-prisma';
 import Chance from 'chance';
 
+// metro crawls through the parent folder first, which means it doesn't find the generated classes
+// Fixed by directly importing from this modules generated node modules client
 import { PrismaClient } from '../node_modules/.prisma/client/rn';
 
 const chance = new Chance();
