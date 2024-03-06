@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native';
-export { reactiveQueriesExtension } from './ReactiveQueriesExtension';
+export { ReactiveQueriesExtension } from './ReactiveQueriesExtension';
 
 declare global {
   // eslint-disable-next-line no-var
