@@ -3022,7 +3022,7 @@ __metadata:
   resolution: "@op-engineering/react-native-prisma@workspace:."
   dependencies:
     "@evilmartians/lefthook": "npm:^1.5.0"
-    "@prisma/client": ../prisma/packages/client
+    "@prisma/client": "npm:5.9.0-integration-react-native.5"
     "@react-native/eslint-config": "npm:^0.72.2"
     "@release-it/conventional-changelog": "npm:^5.0.0"
     "@types/jest": "npm:^28.1.2"
@@ -3106,15 +3106,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@file:../prisma/packages/client::locator=%40op-engineering%2Freact-native-prisma%40workspace%3A.":
-  version: 0.0.0
-  resolution: "@prisma/client@file:../prisma/packages/client#../prisma/packages/client::hash=ebbffa&locator=%40op-engineering%2Freact-native-prisma%40workspace%3A."
+"@prisma/client@npm:5.9.0-integration-react-native.5":
+  version: 5.9.0-integration-react-native.5
+  resolution: "@prisma/client@npm:5.9.0-integration-react-native.5"
   peerDependencies:
     prisma: "*"
   peerDependenciesMeta:
     prisma:
       optional: true
-  checksum: 10/0c41aee43dbd523f133ca97f68f5bb82817a0a60b6a780c0cf35ae888b8dacc10755cf5435b5da05113ae2da7bd227e99f1073328cc3d52efcfcfe67b5304af3
+  checksum: 10/7805dc48b8ecff2fc85f04cff30874f534b7dfc5364723abd585beef410ca7b99e14023f7388c7b3e216387a7f8a2ca54bc84df1ad7b82f584f08030421a3a4e
   languageName: node
   linkType: hard
 
