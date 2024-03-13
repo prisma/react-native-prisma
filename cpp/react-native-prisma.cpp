@@ -105,19 +105,19 @@ void install_cxx(jsi::Runtime &rt,
     return {};
   });
 
-  auto push_schema = HOSTFN("pushSchema", 2) {
-    std::shared_ptr<QueryEngineHostObject> queryEngineHostObject =
-        args[0].asObject(rt).asHostObject<QueryEngineHostObject>(rt);
-    std::string datamodel = args[1].asString(rt).utf8(rt);
-    char *error_ptr;
-
-    auto result = prisma_push_schema(queryEngineHostObject->engine,
-                                     datamodel.c_str(), &error_ptr);
-    if (result != PRISMA_OK) {
-      throw std::runtime_error(error_ptr);
-    }
-    return {};
-  });
+  //  auto push_schema = HOSTFN("pushSchema", 2) {
+  //    std::shared_ptr<QueryEngineHostObject> queryEngineHostObject =
+  //        args[0].asObject(rt).asHostObject<QueryEngineHostObject>(rt);
+  //    std::string datamodel = args[1].asString(rt).utf8(rt);
+  //    char *error_ptr;
+  //
+  //    auto result = prisma_push_schema(queryEngineHostObject->engine,
+  //                                     datamodel.c_str(), &error_ptr);
+  //    if (result != PRISMA_OK) {
+  //      throw std::runtime_error(error_ptr);
+  //    }
+  //    return {};
+  //  });
 
   auto execute = HOSTFN("execute", 4) {
     std::shared_ptr<QueryEngineHostObject> queryEngineHostObject =
@@ -150,7 +150,10 @@ void install_cxx(jsi::Runtime &rt,
         }
 
         if (error_ptr != NULL) {
-          std::cout << error_ptr << std::endl;
+          std::string error_str(error_ptr);
+          if (!error_str.empty()) {
+            std::cout << "Detected prisma error" << error_str << std::endl;
+          }
         }
 
         call_invoker->invokeAsync(
@@ -255,7 +258,7 @@ void install_cxx(jsi::Runtime &rt,
   module.setProperty(rt, "create", std::move(create));
   module.setProperty(rt, "connect", std::move(connect));
   module.setProperty(rt, "execute", std::move(execute));
-  module.setProperty(rt, "pushSchema", std::move(push_schema));
+  //  module.setProperty(rt, "pushSchema", std::move(push_schema));
   module.setProperty(rt, "startTransaction", std::move(start_transaction));
   module.setProperty(rt, "commitTransaction", std::move(commit_transaction));
   module.setProperty(rt, "rollbackTransaction",

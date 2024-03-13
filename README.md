@@ -55,7 +55,7 @@ For expo this process is automated into prebuild. Modify your `app.json` by addi
 This packages contains an extension to the prisma client that allows you to use reactive queries. Use at your own convinience and care since it might introduce large re-renders in your app.
 
 ```ts
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client/rn';
 import { reactiveHooksExtension } from 'react-native-prisma';
 
 const baseClient = new PrismaClient();
@@ -99,7 +99,7 @@ useFindUnique();
 It is also possible to use callbacks for this queries in case you are not using hooks, but you still want to get notified when data changes
 
 ```ts
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client/rn';
 import { reactiveQueriesExtension } from 'react-native-prisma';
 
 const baseClient = new PrismaClient();
