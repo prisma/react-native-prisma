@@ -36,7 +36,9 @@ export const reactiveHooksExtension = () =>
             const model = (ctx.$parent as any)[ctx.$name!];
             const prismaPromise = model.findMany(args);
 
-            const [engineResponse, setEngineResponse] = useState<any>();
+            const [engineResponse, setEngineResponse] = useState<
+              Prisma.Result<T, A, 'findMany'>
+            >([] as any);
 
             useEffect(() => {
               const key = `${model} :: findMany :: ${JSON.stringify(args)}`;
