@@ -62,9 +62,6 @@ const char *prisma_query(struct QueryEngine *qe, const char *body_str,
                          const char *header_str, const char *tx_id_str,
                          char **error_string_ptr);
 
-int prisma_push_schema(struct QueryEngine *qe, const char *datamodel_str,
-                       char **error_string_ptr);
-
 const char *prisma_start_transaction(struct QueryEngine *qe,
                                      const char *options_str,
                                      const char *header_str);
