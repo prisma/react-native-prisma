@@ -1,8 +1,6 @@
 import { Prisma } from '@prisma/client/extension';
 
-type Args = object;
-
-export const reactiveQueriesExtension = (_extensionArgs: Args) =>
+export const reactiveQueriesExtension = () =>
   Prisma.defineExtension((client) => {
     const subscribedQueries: Record<
       string,

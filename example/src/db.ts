@@ -19,7 +19,7 @@ const basePrisma = new PrismaClient({
 basePrisma.$applyPendingMigrations();
 
 // Examples of a reactive client for REACT
-export const hooksPrisma = basePrisma.$extends(reactiveHooksExtension);
+export const hooksPrisma = basePrisma.$extends(reactiveHooksExtension());
 
 export async function createRandomUser() {
   await hooksPrisma.user.create({
@@ -35,7 +35,7 @@ export async function deleteUsers() {
 }
 
 // A generic reactive client
-const reactivePrisma = basePrisma.$extends(reactiveQueriesExtension);
+const reactivePrisma = basePrisma.$extends(reactiveQueriesExtension());
 
 // create a reactive query
 const unsubscriber = reactivePrisma.user.findMany((data) => {

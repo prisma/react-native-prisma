@@ -1,9 +1,7 @@
 import { Prisma } from '@prisma/client/extension';
 import { useEffect, useState } from 'react';
 
-type Args = object;
-
-export const reactiveHooksExtension = (_extensionArgs: Args) =>
+export const reactiveHooksExtension = () =>
   Prisma.defineExtension((client) => {
     const subscribedQueries: Record<
       string,
