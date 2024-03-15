@@ -77,7 +77,6 @@ const char *prisma_rollback_transaction(struct QueryEngine *qe,
 int prisma_disconnect(struct QueryEngine *qe, const char *header_str);
 
 int prisma_apply_pending_migrations(struct QueryEngine *qe,
-                                    const char *datamodel_str,
                                     const char *migration_folder_path,
                                     char **error_string_ptr);
 

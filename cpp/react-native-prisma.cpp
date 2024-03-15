@@ -239,14 +239,12 @@ void install_cxx(jsi::Runtime &rt,
     return {};
   });
 
-  auto apply_pending_migrations = HOSTFN("apply_pending_migrations", 2) {
+  auto apply_pending_migrations = HOSTFN("apply_pending_migrations", 1) {
     std::shared_ptr<QueryEngineHostObject> queryEngineHostObject =
         args[0].asObject(rt).asHostObject<QueryEngineHostObject>(rt);
-    std::string datamodel = args[1].asString(rt).utf8(rt);
     char *error_ptr;
     int res = prisma_apply_pending_migrations(
-        queryEngineHostObject->engine, datamodel.c_str(),
-        migrations_path.c_str(), &error_ptr);
+        queryEngineHostObject->engine, migrations_path.c_str(), &error_ptr);
     if (res != PRISMA_OK) {
       throw std::runtime_error(error_ptr);
     }
@@ -258,7 +256,6 @@ void install_cxx(jsi::Runtime &rt,
   module.setProperty(rt, "create", std::move(create));
   module.setProperty(rt, "connect", std::move(connect));
   module.setProperty(rt, "execute", std::move(execute));
-  //  module.setProperty(rt, "pushSchema", std::move(push_schema));
   module.setProperty(rt, "startTransaction", std::move(start_transaction));
   module.setProperty(rt, "commitTransaction", std::move(commit_transaction));
   module.setProperty(rt, "rollbackTransaction",
