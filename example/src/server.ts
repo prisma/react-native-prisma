@@ -44,7 +44,7 @@ server.post('/query', async (req, res) => {
   const body: string = req.postData?.body;
   // @ts-expect-error
   const txId: string = req.postData?.txId;
-  const queryRes = __PrismaProxy!.execute(engine, body, '', txId);
+  const queryRes = await __PrismaProxy!.execute(engine, body, '', txId);
   // sleep for a bit to allow for logs to be collected
   await sleep(1);
   res.send(

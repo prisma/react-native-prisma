@@ -59,7 +59,7 @@ type PrismaProxy = {
     body: string,
     headers: string,
     txId: string
-  ) => string;
+  ) => Promise<string>;
   startTransaction: (
     engine: QueryEngineObject,
     body: string,
