@@ -1,4 +1,10 @@
+import 'react-native-url-polyfill/auto';
 import { NativeModules } from 'react-native';
+import { atob, btoa } from 'react-native-quick-base64';
+
+global.atob = atob;
+global.btoa = btoa;
+
 export { reactiveHooksExtension } from './ReactiveHooksExtension';
 export { reactiveQueriesExtension } from './ReactiveQueriesExtension';
 

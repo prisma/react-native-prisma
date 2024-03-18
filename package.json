@@ -181,6 +181,8 @@
     }
   },
   "dependencies": {
-    "pod-install": "^0.2.0"
+    "pod-install": "^0.2.0",
+    "react-native-quick-base64": "^2.0.8",
+    "react-native-url-polyfill": "^2.0.0"
   }
 }
