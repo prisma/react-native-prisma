@@ -1,6 +1,6 @@
 {
   "name": "@op-engineering/react-native-prisma",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "Prisma for react-native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -82,6 +82,8 @@
     "react": "18.2.0",
     "react-native": "0.73.2",
     "react-native-builder-bob": "^0.20.0",
+    "react-native-quick-base64": "2.0.8",
+    "react-native-url-polyfill": "2.0.0",
     "release-it": "^15.0.0",
     "turbo": "^1.10.7",
     "typescript": "^5.0.2"
@@ -93,7 +95,8 @@
     "@prisma/client": "*",
     "expo": ">=49.0.0",
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-quick-base64": "*"
   },
   "workspaces": [
     "example"
