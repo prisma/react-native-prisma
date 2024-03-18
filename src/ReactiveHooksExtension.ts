@@ -138,6 +138,78 @@ export const reactiveHooksExtension = () =>
 
             return engineResponse;
           },
+          useAggregate<T, A>(
+            this: T,
+            args?: Prisma.Exact<A, Prisma.Args<T, 'aggregate'>>
+          ): Prisma.Result<T, A, 'aggregate'> {
+            const ctx = Prisma.getExtensionContext(this);
+            const model = (ctx.$parent as any)[ctx.$name!];
+            const prismaPromise = model.aggregate(args);
+
+            const [engineResponse, setEngineResponse] = useState<any>();
+
+            useEffect(() => {
+              const key = `${model} :: aggregate :: ${JSON.stringify(args)}`;
+              const callbackKey = `${model} :: aggregate :: ${JSON.stringify(
+                args
+              )} :: ${Math.random()}`;
+              if (subscribedQueries[key] != null) {
+                subscribedQueries[key]!.callbacks[callbackKey] =
+                  setEngineResponse;
+              } else {
+                subscribedQueries[key] = {
+                  callbacks: {
+                    [callbackKey]: setEngineResponse,
+                  },
+                  query: () => model.aggregate(args),
+                };
+              }
+
+              prismaPromise.then(setEngineResponse);
+
+              return () => {
+                delete subscribedQueries[key]!.callbacks[callbackKey];
+              };
+            }, []);
+
+            return engineResponse;
+          },
+          useGroupBy<T, A>(
+            this: T,
+            args?: Prisma.Exact<A, Prisma.Args<T, 'groupBy'>>
+          ): Prisma.Result<T, A, 'groupBy'> {
+            const ctx = Prisma.getExtensionContext(this);
+            const model = (ctx.$parent as any)[ctx.$name!];
+            const prismaPromise = model.groupBy(args);
+
+            const [engineResponse, setEngineResponse] = useState<any>();
+
+            useEffect(() => {
+              const key = `${model} :: groupBy :: ${JSON.stringify(args)}`;
+              const callbackKey = `${model} :: groupBy :: ${JSON.stringify(
+                args
+              )} :: ${Math.random()}`;
+              if (subscribedQueries[key] != null) {
+                subscribedQueries[key]!.callbacks[callbackKey] =
+                  setEngineResponse;
+              } else {
+                subscribedQueries[key] = {
+                  callbacks: {
+                    [callbackKey]: setEngineResponse,
+                  },
+                  query: () => model.groupBy(args),
+                };
+              }
+
+              prismaPromise.then(setEngineResponse);
+
+              return () => {
+                delete subscribedQueries[key]!.callbacks[callbackKey];
+              };
+            }, []);
+
+            return engineResponse;
+          },
           async create<T, A>(
             this: T,
             args?: Prisma.Exact<A, Prisma.Args<T, 'create'>>

@@ -57,6 +57,62 @@ export const reactiveQueriesExtension = () =>
               delete subscribedQueries[key]!.callbacks[callbackKey];
             };
           },
+          aggregate<T, A>(
+            this: T,
+            cb: (data: Prisma.Result<T, A, 'aggregate'>) => void,
+            args?: Prisma.Exact<A, Prisma.Args<T, 'aggregate'>>
+          ): () => void {
+            const ctx = Prisma.getExtensionContext(this);
+            const model = (ctx.$parent as any)[ctx.$name!];
+
+            const key = `${model} :: aggregate :: ${JSON.stringify(args)}`;
+            const callbackKey = `${model} :: aggregate :: ${JSON.stringify(
+              args
+            )} :: ${Math.random()}`;
+
+            if (subscribedQueries[key] != null) {
+              subscribedQueries[key]!.callbacks[callbackKey] = cb;
+            } else {
+              subscribedQueries[key] = {
+                callbacks: {
+                  [callbackKey]: cb,
+                },
+                query: () => model.aggregate(args),
+              };
+            }
+
+            return () => {
+              delete subscribedQueries[key]!.callbacks[callbackKey];
+            };
+          },
+          groupBy<T, A>(
+            this: T,
+            cb: (data: Prisma.Result<T, A, 'groupBy'>) => void,
+            args?: Prisma.Exact<A, Prisma.Args<T, 'groupBy'>>
+          ): () => void {
+            const ctx = Prisma.getExtensionContext(this);
+            const model = (ctx.$parent as any)[ctx.$name!];
+
+            const key = `${model} :: groupBy :: ${JSON.stringify(args)}`;
+            const callbackKey = `${model} :: groupBy :: ${JSON.stringify(
+              args
+            )} :: ${Math.random()}`;
+
+            if (subscribedQueries[key] != null) {
+              subscribedQueries[key]!.callbacks[callbackKey] = cb;
+            } else {
+              subscribedQueries[key] = {
+                callbacks: {
+                  [callbackKey]: cb,
+                },
+                query: () => model.groupBy(args),
+              };
+            }
+
+            return () => {
+              delete subscribedQueries[key]!.callbacks[callbackKey];
+            };
+          },
           findUnique<T, A>(
             this: T,
             cb: (data: Prisma.Result<T, A, 'findMany'>) => void,
