@@ -16,7 +16,14 @@ const basePrisma = new PrismaClient({
 
 // You should always call this at the start of the application
 // failure to migrate might leave you with a non working app version
-basePrisma.$applyPendingMigrations();
+try {
+  basePrisma.$applyPendingMigrations();
+} catch (e) {
+  console.error(`failed to apply migrations: ${e}`);
+  throw new Error(
+    'Applying migrations failed, your app is now in an inconsistent state. We cannot guarantee safety, it is now your responsability to reset the database or tell the user to re-install the app'
+  );
+}
 
 // Examples of a reactive client for REACT
 export const hooksPrisma = basePrisma.$extends(reactiveHooksExtension());

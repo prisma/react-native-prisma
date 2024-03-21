@@ -52,34 +52,87 @@ extern const int32_t PRISMA_UNKNOWN_ERROR;
 
 extern const int32_t PRISMA_MISSING_POINTER;
 
+/**
+ * # Safety
+ *
+ * The calling context needs to pass a valid pointer that will store the
+ * reference
+ */
 int prisma_create(struct ConstructorOptions options,
                   struct QueryEngine **qe_ptr);
 
+/**
+ * # Safety
+ *
+ * The calling context needs to pass a valid pointer that will store the
+ * reference to the error string
+ */
 int prisma_connect(struct QueryEngine *qe, const char *trace,
                    char **error_string_ptr);
 
+/**
+ * # Safety
+ *
+ * The calling context needs to pass a valid pointer that will store the
+ * reference to the error string
+ */
 const char *prisma_query(struct QueryEngine *qe, const char *body_str,
                          const char *header_str, const char *tx_id_str,
                          char **error_string_ptr);
 
+/**
+ * # Safety
+ *
+ * The calling context needs to pass a valid pointer that will store the
+ * reference to the error string
+ */
 const char *prisma_start_transaction(struct QueryEngine *qe,
                                      const char *options_str,
                                      const char *header_str);
 
+/**
+ * # Safety
+ *
+ * The calling context needs to pass a valid pointer that will store the
+ * reference to the error string
+ */
 const char *prisma_commit_transaction(struct QueryEngine *qe,
                                       const char *tx_id_str,
                                       const char *header_str);
 
+/**
+ * # Safety
+ *
+ * The calling context needs to pass a valid pointer that will store the
+ * reference to the error string
+ */
 const char *prisma_rollback_transaction(struct QueryEngine *qe,
                                         const char *tx_id_str,
                                         const char *header_str);
 
+/**
+ * # Safety
+ *
+ * The calling context needs to pass a valid pointer that will store the
+ * reference to the error string
+ */
 int prisma_disconnect(struct QueryEngine *qe, const char *header_str);
 
+/**
+ * # Safety
+ *
+ * The calling context needs to pass a valid pointer that will store the
+ * reference to the error string
+ */
 int prisma_apply_pending_migrations(struct QueryEngine *qe,
                                     const char *migration_folder_path,
                                     char **error_string_ptr);
 
+/**
+ * # Safety
+ *
+ * Will destroy the pointer to the query engine
+ */
 int prisma_destroy(struct QueryEngine *qe);
 
 #ifdef __cplusplus

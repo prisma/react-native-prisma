@@ -15,10 +15,8 @@ server.get('/ping', async (_, res) => {
 });
 
 server.post('/connect', async (req, res) => {
-  // @ts-ignore
-  const schema: string = req.postData?.schema;
-  // // @ts-ignore
-  // const logLevel =  req.postData?.logLevel;
+  // @ts-expect-error
+  const schema: string = req.postData!.schema;
 
   logs = [];
 
@@ -57,12 +55,10 @@ server.post('/query', async (req, res) => {
 server.post('/start_transaction', async (req, res) => {
   // @ts-expect-error
   const body: string = req.postData?.body;
-  // console.log(typeof body);
-  // console.log(body);
   // @ts-expect-error
   const trace: string = req.postData?.trace;
   const queryRes = __PrismaProxy!.startTransaction(engine, body, trace);
-  res.send(200, 'application/text', queryRes);
+  res.send(200, 'application/text', JSON.stringify(queryRes));
 });
 
 server.post('/commit_transaction', async (req, res) => {
@@ -71,7 +67,7 @@ server.post('/commit_transaction', async (req, res) => {
   // @ts-expect-error
   const trace: string = req.postData?.trace;
   const queryRes = __PrismaProxy!.commitTransaction(engine, txId, trace);
-  res.send(200, 'application/text', queryRes);
+  res.send(200, 'application/text', JSON.stringify(queryRes));
 });
 
 server.post('/rollback_transaction', async (req, res) => {
@@ -80,7 +76,7 @@ server.post('/rollback_transaction', async (req, res) => {
   // @ts-expect-error
   const trace: string = req.postData?.trace;
   const queryRes = __PrismaProxy!.rollbackTransaction(engine, txId, trace);
-  res.send(200, 'application/text', queryRes);
+  res.send(200, 'application/text', JSON.stringify(queryRes));
 });
 
 server.post('/disconnect', async (req, res) => {
