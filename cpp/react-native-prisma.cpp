@@ -69,10 +69,15 @@ void install_cxx(jsi::Runtime &rt,
                            .native = nativeOptions,
                            .log_callback = &log_callback};
 
-    int prisma_res = prisma_create(options, &ptr);
+    char *error_ptr;
+
+    int prisma_res = prisma_create(options, &ptr, &error_ptr);
 
     if (prisma_res != PRISMA_OK) {
-      throw std::runtime_error("Failed to create prisma engine");
+      auto error_string = std::string(error_ptr);
+      free(error_ptr);
+      throw std::runtime_error("Failed to create prisma engine: " +
+                               error_string);
     }
 
     auto log_callback_fn = [&rt, js_log_callback](std::string msg) {
@@ -103,6 +108,7 @@ void install_cxx(jsi::Runtime &rt,
                                 &error_ptr);
     if (result != PRISMA_OK) {
       std::string error_message(error_ptr);
+      free(error_ptr);
       throw std::runtime_error(error_message);
     }
     return {};
@@ -146,9 +152,11 @@ void install_cxx(jsi::Runtime &rt,
           } else {
             auto errCtr = rt.global().getPropertyAsFunction(rt, "Error");
             std::string error_message(error_ptr);
+            free(error_ptr);
 
             auto error = errCtr.callAsConstructor(
                 rt, jsi::String::createFromUtf8(rt, error_message));
+
             reject->asObject(rt).asFunction(rt).call(rt, error);
           }
         });
@@ -233,7 +241,9 @@ void install_cxx(jsi::Runtime &rt,
         queryEngineHostObject->engine, migrations_path.c_str(), &error_ptr);
 
     if (res != PRISMA_OK) {
-      throw std::runtime_error(error_ptr);
+      auto error_string = std::string(error_ptr);
+      free(error_ptr);
+      throw std::runtime_error(error_string);
     }
 
     return {};

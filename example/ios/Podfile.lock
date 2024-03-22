@@ -894,7 +894,7 @@ PODS:
     - React
   - react-native-network-info (5.2.1):
     - React
-  - react-native-prisma (0.1.15):
+  - react-native-prisma (0.1.18):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React
@@ -1284,7 +1284,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 9ee041e1d7be96da6d76a251f92e72b711c651d6
   react-native-http-bridge-refurbished: 88fe66aa55e63807bd8cbaa372c062bc76ed4962
   react-native-network-info: d1290ffc0bd0709e11436f5b8d7f605dcc5c4530
-  react-native-prisma: ed5f6abb9baf2adf82c3760f8e796f92bd79fa59
+  react-native-prisma: f4a5e5f1c550a92277e9086169544e350031dc38
   react-native-quick-base64: 777057ea4286f806b00259ede65dc79c7c706320
   React-nativeconfig: d753fbbc8cecc8ae413d615599ac378bbf6999bb
   React-NativeModulesApple: 964f4eeab1b4325e8b6a799cf4444c3fd4eb0a9c
@@ -1310,6 +1310,6 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 13c8ef87792450193e117976337b8527b49e8c03
 
-PODFILE CHECKSUM: bd73a61b8e5969265bec05a44bbadbff35c5a6c6
+PODFILE CHECKSUM: fd6ca157cef4c8b69b4f5b10d9d6e29e9cab265d
 
-COCOAPODS: 1.14.0
+COCOAPODS: 1.15.2

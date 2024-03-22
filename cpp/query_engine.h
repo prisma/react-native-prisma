@@ -54,18 +54,19 @@ extern const int32_t PRISMA_MISSING_POINTER;
 
 /**
  * # Safety
- *
  * The calling context needs to pass a valid pointer that will store the
- * reference
+ * reference The calling context also need to clear the pointer of the error
+ * string if it is not null
  */
 int prisma_create(struct ConstructorOptions options,
-                  struct QueryEngine **qe_ptr);
+                  struct QueryEngine **qe_ptr, char **error_string_ptr);
 
 /**
  * # Safety
  *
  * The calling context needs to pass a valid pointer that will store the
- * reference to the error string
+ * reference to the error string The calling context also need to clear the
+ * pointer of the error string if it is not null
  */
 int prisma_connect(struct QueryEngine *qe, const char *trace,
                    char **error_string_ptr);
@@ -74,7 +75,8 @@ int prisma_connect(struct QueryEngine *qe, const char *trace,
  * # Safety
  *
  * The calling context needs to pass a valid pointer that will store the
- * reference to the error string
+ * reference to the error string The calling context also need to clear the
+ * pointer of the error string if it is not null
  */
 const char *prisma_query(struct QueryEngine *qe, const char *body_str,
                          const char *header_str, const char *tx_id_str,
@@ -84,7 +86,8 @@ const char *prisma_query(struct QueryEngine *qe, const char *body_str,
  * # Safety
  *
  * The calling context needs to pass a valid pointer that will store the
- * reference to the error string
+ * reference to the error string The calling context also need to clear the
+ * pointer of the error string if it is not null
  */
 const char *prisma_start_transaction(struct QueryEngine *qe,
                                      const char *options_str,
@@ -122,7 +125,8 @@ int prisma_disconnect(struct QueryEngine *qe, const char *header_str);
  * # Safety
  *
  * The calling context needs to pass a valid pointer that will store the
- * reference to the error string
+ * reference to the error string The calling context also need to clear the
+ * pointer of the error string if it is not null
  */
 int prisma_apply_pending_migrations(struct QueryEngine *qe,
                                     const char *migration_folder_path,
