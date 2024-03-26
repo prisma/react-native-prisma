@@ -19,6 +19,7 @@ import {
   hooksPrisma,
   createRandomUser,
   deleteUsers,
+  initializeDB,
   // createRandomUserGeneric,
 } from './db';
 
@@ -29,10 +30,15 @@ global.btoa = btoa;
 export default function App() {
   const [prismaTime, setPrismaTime] = useState(0);
   const [IP, setIP] = useState<string>('');
+  const [dbInitialized, setDbInitialized] = useState(false);
 
   useEffect(() => {
     NetworkInfo.getIPAddress().then((ip) => {
       setIP(`${ip}:3000`);
+    });
+
+    initializeDB().then(() => {
+      setDbInitialized(true);
     });
   }, []);
 
@@ -47,6 +53,10 @@ export default function App() {
 
   const users = hooksPrisma.user.useFindMany();
 
+  if (!dbInitialized) {
+    return <Text>Initializing database...</Text>;
+  }
+
   const copyIP = () => {
     Clipboard.setString(IP);
     console.warn('IP copied to clipboard');
@@ -57,9 +67,8 @@ export default function App() {
       <ScrollView contentContainerClassName="p-4 gap-4">
         <Text className="text-white font-semibold text-lg">▲ Prisma</Text>
         <TouchableOpacity onPress={copyIP}>
-          <View className="justify-between flex-row bg-[#58A6FF55] p-4 border border-[#58A6FF] rounded-lg">
-            <Text className="text-white">HTTP Server IP:</Text>
-            <Text className="text-white font-semibold">{IP}</Text>
+          <View className="justify-between flex-row bg-[#58ffa655] p-4 border rounded-lg">
+            <Text className="text-white">HTTP Server Running on Port 3000</Text>
           </View>
         </TouchableOpacity>
         <View className="flex-row justify-between">

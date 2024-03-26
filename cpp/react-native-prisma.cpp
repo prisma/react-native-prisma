@@ -233,7 +233,7 @@ void install_cxx(jsi::Runtime &rt,
     return {};
   });
 
-  auto apply_pending_migrations = HOSTFN("apply_pending_migrations", 1) {
+  auto apply_pending_migrations = HOSTFN("applyPendingMigrations", 1) {
     std::shared_ptr<QueryEngineHostObject> queryEngineHostObject =
         args[0].asObject(rt).asHostObject<QueryEngineHostObject>(rt);
     char *error_ptr;
