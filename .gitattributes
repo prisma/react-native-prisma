@@ -1,3 +1,5 @@
 *.pbxproj -text
 # specific for windows script files
 *.bat text eol=crlf
+QueryEngine.xcframework/ios-arm64/libquery_engine.a filter=lfs diff=lfs merge=lfs -text
+QueryEngine.xcframework/ios-arm64_x86_64-simulator/libquery_engine.a filter=lfs diff=lfs merge=lfs -text
