@@ -83,5 +83,5 @@ type PrismaProxy = {
   ) => string;
   disconnect: (engine: QueryEngineObject, headers: string) => void;
   pushSchema: (engine: QueryEngineObject, schema: string) => void;
-  applyPendingMigrations: (engine: QueryEngineObject, schema: string) => void;
+  applyPendingMigrations: (engine: QueryEngineObject) => void;
 };

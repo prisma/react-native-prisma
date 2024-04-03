@@ -6,7 +6,7 @@ import Chance from 'chance';
 
 // metro crawls through the parent folder first, which means it doesn't find the generated classes
 // Fixed by directly importing from this modules generated node modules client
-import { PrismaClient } from '../node_modules/.prisma/client/rn';
+import { PrismaClient } from '../node_modules/.prisma/client/react-native';
 
 const chance = new Chance();
 
@@ -52,10 +52,29 @@ const unsubscriber = reactivePrisma.user.findMany((data) => {
 });
 
 export async function createRandomUserGeneric() {
-  await reactivePrisma.user.create({
+  return await reactivePrisma.user.create({
     data: {
       email: chance.email(),
       name: chance.name(),
+    },
+  });
+}
+
+export async function runE2EQuery() {
+  const createdUser = await basePrisma.user.create({
+    data: {
+      email: chance.email(),
+      name: chance.name(),
+    },
+  });
+  const foundUser = await basePrisma.user.findFirst({
+    where: {
+      id: createdUser.id,
+    },
+  });
+  await basePrisma.user.delete({
+    where: {
+      id: foundUser.id,
     },
   });
 }

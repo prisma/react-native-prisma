@@ -20,6 +20,7 @@ import {
   createRandomUser,
   deleteUsers,
   initializeDB,
+  runE2EQuery,
   // createRandomUserGeneric,
 } from './db';
 
@@ -31,15 +32,20 @@ export default function App() {
   const [prismaTime, setPrismaTime] = useState(0);
   const [IP, setIP] = useState<string>('');
   const [dbInitialized, setDbInitialized] = useState(false);
+  const [e2eSuccess, setE2ESuccess] = useState(false);
 
   useEffect(() => {
-    NetworkInfo.getIPAddress().then((ip) => {
-      setIP(`${ip}:3000`);
-    });
-
-    initializeDB().then(() => {
+    const setup = async () => {
+      await initializeDB();
+      NetworkInfo.getIPAddress().then((ip) => {
+        setIP(`${ip}:3000`);
+      });
       setDbInitialized(true);
-    });
+      await runE2EQuery();
+      setE2ESuccess(true);
+    };
+
+    setup();
   }, []);
 
   const createUser = async () => {
@@ -54,7 +60,11 @@ export default function App() {
   const users = hooksPrisma.user.useFindMany();
 
   if (!dbInitialized) {
-    return <Text>Initializing database...</Text>;
+    return (
+      <SafeAreaView className="flex-1 bg-prisma">
+        <Text>Initializing database...</Text>
+      </SafeAreaView>
+    );
   }
 
   const copyIP = () => {
@@ -65,7 +75,20 @@ export default function App() {
   return (
     <SafeAreaView className="flex-1 bg-prisma">
       <ScrollView contentContainerClassName="p-4 gap-4">
-        <Text className="text-white font-semibold text-lg">▲ Prisma</Text>
+        <View className="flex-row items-center justify-between">
+          <Text className="text-white font-semibold text-lg">▲ Prisma</Text>
+          {e2eSuccess ? (
+            <View
+              className="rounded-full h-3 w-3 bg-green-500"
+              testID="test_indicator"
+            />
+          ) : (
+            <View
+              className="rounded-full h-3 w-3 bg-red-500"
+              testID="test_indicator"
+            />
+          )}
+        </View>
         <TouchableOpacity onPress={copyIP}>
           <View className="justify-between flex-row bg-[#58ffa655] p-4 border rounded-lg">
             <Text className="text-white">HTTP Server Running on Port 3000</Text>
