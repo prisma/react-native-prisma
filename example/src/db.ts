@@ -71,7 +71,7 @@ export async function runE2EQuery() {
   });
   await basePrisma.user.delete({
     where: {
-      id: foundUser.id,
+      id: foundUser?.id,
     },
   });
 }
