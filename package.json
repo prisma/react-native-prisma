@@ -86,7 +86,7 @@
     "react-native-url-polyfill": "2.0.0",
     "release-it": "^15.0.0",
     "turbo": "^1.10.7",
-    "typescript": "^5.0.2"
+    "typescript": "^5.4.3"
   },
   "resolutions": {
     "@types/react": "17.0.21"

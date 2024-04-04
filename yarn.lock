@@ -3279,7 +3279,7 @@ __metadata:
     react-native-url-polyfill: "npm:2.0.0"
     release-it: "npm:^15.0.0"
     turbo: "npm:^1.10.7"
-    typescript: "npm:^5.0.2"
+    typescript: "npm:^5.4.3"
   peerDependencies:
     "@prisma/client": "*"
     expo: ">=49.0.0"
@@ -3335,13 +3335,13 @@ __metadata:
 
 "@prisma/client@file:../../prisma/packages/client::locator=react-native-prisma-example%40workspace%3Aexample":
   version: 0.0.0
-  resolution: "@prisma/client@file:../../prisma/packages/client#../../prisma/packages/client::hash=eaceea&locator=react-native-prisma-example%40workspace%3Aexample"
+  resolution: "@prisma/client@file:../../prisma/packages/client#../../prisma/packages/client::hash=7acb12&locator=react-native-prisma-example%40workspace%3Aexample"
   peerDependencies:
     prisma: "*"
   peerDependenciesMeta:
     prisma:
       optional: true
-  checksum: 10/fcf10d0140ecbf14c4bd1b55884ab024d6c3e0b94341057869a023bea5277bc88becc6d1c7c860cf8a3f7ff74744d218edec6b4ff1e3966001beef0edb2aae45
+  checksum: 10/9dfb4d524726d413758ec24abe57e11da358434349110afebdca80201add1689b274e9eaf131cb876d03ad5db79bdd3a8d41cacc6fda049c8adc5fb1d809049e
   languageName: node
   linkType: hard
 
@@ -17286,7 +17286,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.0.2, typescript@npm:^5.1.3":
+"typescript@npm:^5.1.3":
   version: 5.3.3
   resolution: "typescript@npm:5.3.3"
   bin:
@@ -17296,13 +17296,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.0.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.1.3#optional!builtin<compat/typescript>":
+"typescript@npm:^5.4.3":
+  version: 5.4.3
+  resolution: "typescript@npm:5.4.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/de4c69f49a7ad4b1ea66a6dcc8b055ac34eb56af059a069d8988dd811c5e649be07e042e5bf573e8d0ac3ec2f30e6c999aa651cd09f6e9cbc6113749e8b6be20
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.1.3#optional!builtin<compat/typescript>":
   version: 5.3.3
   resolution: "typescript@patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/c93786fcc9a70718ba1e3819bab56064ead5817004d1b8186f8ca66165f3a2d0100fee91fa64c840dcd45f994ca5d615d8e1f566d39a7470fc1e014dbb4cf15d
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.4.3#optional!builtin<compat/typescript>":
+  version: 5.4.3
+  resolution: "typescript@patch:typescript@npm%3A5.4.3#optional!builtin<compat/typescript>::version=5.4.3&hash=5adc0c"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/5aedd97595582b08aadb8a70e8e3ddebaf5a9c1e5ad4d6503c2fcfc15329b5cf8d01145b09913e9555683ac16c5123a96be32b6d72614098ebd42df520eed9b1
   languageName: node
   linkType: hard
 
