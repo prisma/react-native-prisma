@@ -5,7 +5,7 @@ A Prisma engine adaptation for React Native.
 ## Installation
 
 ```
-yarn add --exact react-native-prisma react-native-quick-base64 react-native-url-polyfill @prisma/client@5.9.0-integration-react-native.5 @op-engineering/react-native-prisma@0.1.9
+yarn add --exact react-native-prisma react-native-quick-base64 react-native-url-polyfill @prisma/client
 npx pod-install
 ```
 
@@ -24,7 +24,7 @@ set -e
 
 WITH_ENVIRONMENT="../node_modules/react-native/scripts/xcode/with-environment.sh"
 REACT_NATIVE_XCODE="../node_modules/react-native/scripts/react-native-xcode.sh"
-PRISMA_MIGRATIONS="../node_modules/@op-engineering/react-native-prisma/copy-migrations.sh" # Add this
+PRISMA_MIGRATIONS="../node_modules/react-native-prisma/copy-migrations.sh" # Add this
 
 /bin/sh -c "$WITH_ENVIRONMENT $PRISMA_MIGRATIONS $REACT_NATIVE_XCODE" # Add it to the list of running scripts
 ```
@@ -34,7 +34,7 @@ PRISMA_MIGRATIONS="../node_modules/@op-engineering/react-native-prisma/copy-migr
 For Android you need to modify your apps `app/Build.gradle`. Add the following at the top of the file.
 
 ```groovy
-apply from: "../../node_modules/@op-engineering/react-native-prisma/react-native-prisma.gradle"
+apply from: "../../node_modules/react-native-prisma/react-native-prisma.gradle"
 ```
 
 ### Expo
@@ -45,7 +45,7 @@ For expo this process is automated into prebuild. Modify your `app.json` by addi
 {
   "expo": {
     // ... The rest of your expo config
-    "plugins": ["@op-engineering/react-native-prisma"]
+    "plugins": ["react-native-prisma"]
   }
 }
 ```

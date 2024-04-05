@@ -1,5 +1,5 @@
 {
-  "name": "@op-engineering/react-native-prisma",
+  "name": "react-native-prisma",
   "version": "0.1.18",
   "description": "Prisma for react-native",
   "main": "lib/commonjs/index",

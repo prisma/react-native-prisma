@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "@op-engineering/react-native-prisma": [
+      "react-native-prisma": [
         "./src/index"
       ]
     },
