@@ -3335,13 +3335,13 @@ __metadata:
 
 "@prisma/client@file:../../prisma/packages/client::locator=react-native-prisma-example%40workspace%3Aexample":
   version: 0.0.0
-  resolution: "@prisma/client@file:../../prisma/packages/client#../../prisma/packages/client::hash=4a523a&locator=react-native-prisma-example%40workspace%3Aexample"
+  resolution: "@prisma/client@file:../../prisma/packages/client#../../prisma/packages/client::hash=e32c25&locator=react-native-prisma-example%40workspace%3Aexample"
   peerDependencies:
     prisma: "*"
   peerDependenciesMeta:
     prisma:
       optional: true
-  checksum: 10/d95ddd37646fff511dc0664a92525b79c27bf674c40f2d93e47fe11e71c99289e4d14f901f779268f67f0dbe67bfa33d03466359a9d2cd1d105d8c11b3daa750
+  checksum: 10/9c59f8e10bb1f764cbbe5161b50f536f161bfc3562c906d004fb44b6b9ffcba80e03342ce8ab8661c220e082b91affc39b0c58a4bc903f03251f406f9294497f
   languageName: node
   linkType: hard
 
