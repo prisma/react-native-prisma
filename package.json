@@ -56,7 +56,7 @@
     "url": "git+https://github.com/ospfranco/react-native-prisma.git"
   },
   "author": "Oscar Franco <ospfranco@gmail.com> (https://github.com/ospfranco)",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/ospfranco/react-native-prisma/issues"
   },
