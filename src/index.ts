@@ -21,13 +21,13 @@ const PrismaModule = isTurboModuleEnabled
   : NativeModules.Prisma;
 
 if (!PrismaModule) {
-  throw new Error('🟥 react-native-prisma failed to initialize');
+  throw new Error('🟥 @prisma/react-native failed to initialize');
 }
 
 PrismaModule.install();
 
 if (!global.__PrismaProxy) {
-  throw new Error('🟥 react-native-prisma C++ bindings failed to initialize');
+  throw new Error('🟥 prisma/react-native C++ bindings failed to initialize');
 }
 
 // Wrap the create function to stringify the env variables if necessary

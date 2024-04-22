@@ -2,12 +2,12 @@
 module.exports = {
   testRunner: {
     args: {
-      '$0': 'jest',
-      config: 'e2e/jest.config.js'
+      $0: 'jest',
+      config: 'e2e/jest.config.js',
     },
     jest: {
-      setupTimeout: 120000
-    }
+      setupTimeout: 120000,
+    },
   },
   apps: {
     // 'ios.debug': {
@@ -18,7 +18,8 @@ module.exports = {
     'ios.release': {
       type: 'ios.app',
       binaryPath: 'ios/build/Build/Products/Release-iphonesimulator/Prisma.app',
-      build: 'xcodebuild -workspace ios/PrismaExample.xcworkspace -scheme Release -configuration Release -sdk iphonesimulator -derivedDataPath ios/build'
+      build:
+        'xcodebuild -workspace ios/PrismaExample.xcworkspace -scheme Release -configuration Release -sdk iphonesimulator -derivedDataPath ios/build',
     },
     // 'android.debug': {
     //   type: 'android.apk',
@@ -38,8 +39,8 @@ module.exports = {
     simulator: {
       type: 'ios.simulator',
       device: {
-        type: 'iPhone 14'
-      }
+        type: 'iPhone 14',
+      },
     },
     // attached: {
     //   type: 'android.attached',
@@ -61,7 +62,7 @@ module.exports = {
     // },
     'ios.sim.release': {
       device: 'simulator',
-      app: 'ios.release'
+      app: 'ios.release',
     },
     // 'android.att.debug': {
     //   device: 'attached',
@@ -79,5 +80,5 @@ module.exports = {
     //   device: 'emulator',
     //   app: 'android.release'
     // }
-  }
+  },
 };

@@ -3,7 +3,7 @@ import Chance from 'chance';
 import {
   reactiveHooksExtension,
   reactiveQueriesExtension,
-} from 'react-native-prisma';
+} from '@prisma/react-native';
 
 const chance = new Chance();
 

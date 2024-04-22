@@ -1,4 +1,4 @@
-import 'react-native-prisma';
+import '@prisma/react-native';
 import React, { useEffect, useState } from 'react';
 import {
   Clipboard,

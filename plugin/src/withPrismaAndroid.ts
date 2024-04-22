@@ -2,7 +2,7 @@ import type { ConfigPlugin } from 'expo/config-plugins';
 import { withAppBuildGradle } from 'expo/config-plugins';
 
 const SCRIPT_LINE =
-  'apply from: "../../node_modules/react-native-prisma/react-native-prisma.gradle"';
+  'apply from: "../../node_modules/@prisma/react-native/react-native-prisma.gradle"';
 
 export const withPrismaAndroid: ConfigPlugin<void> = (config) => {
   const cfg = withAppBuildGradle(config, (config) => {
