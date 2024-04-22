@@ -62,7 +62,8 @@
   },
   "homepage": "https://github.com/ospfranco/react-native-prisma#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "devDependencies": {
     "@evilmartians/lefthook": "^1.5.0",
