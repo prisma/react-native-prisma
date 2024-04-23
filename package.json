@@ -53,14 +53,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ospfranco/react-native-prisma.git"
+    "url": "git+https://github.com/prisma/react-native-prisma.git"
   },
   "author": "Oscar Franco <ospfranco@gmail.com> (https://github.com/ospfranco)",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/ospfranco/react-native-prisma/issues"
+    "url": "https://github.com/prisma/react-native-prisma/issues"
   },
-  "homepage": "https://github.com/ospfranco/react-native-prisma#readme",
+  "homepage": "https://github.com/prisma/react-native-prisma#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
