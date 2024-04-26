@@ -70,8 +70,8 @@ importers:
         specifier: 0.73.2
         version: 0.73.2(@babel/core@7.24.4)(@babel/preset-env@7.24.4)(react@18.2.0)
       react-native-builder-bob:
-        specifier: ^0.20.0
-        version: 0.20.4
+        specifier: 0.23.2
+        version: 0.23.2
       release-it:
         specifier: ^15.0.0
         version: 15.11.0
@@ -9313,13 +9313,6 @@ packages:
       - ts-node
     dev: true
 
-  /jetifier@2.0.0:
-    resolution: {integrity: sha512-J4Au9KuT74te+PCCCHKgAjyLlEa+2VyIAEPNCdE5aNkAJ6FAJcAqcdzEkSnzNksIa9NkGmC4tPiClk2e7tCJuQ==}
-    hasBin: true
-    requiresBuild: true
-    dev: true
-    optional: true
-
   /jimp-compact@0.16.1:
     resolution: {integrity: sha512-dZ6Ra7u1G8c4Letq/B5EzAxj4tLFHL+cGtdpR+PVm4yzPDj+lCk+AbivWt1eOM+ikzkowtyV7qSqX6qr3t71Ww==}
     dev: true
@@ -11520,9 +11513,9 @@ packages:
   /react-is@18.3.0:
     resolution: {integrity: sha512-wRiUsea88TjKDc4FBEn+sLvIDesp6brMbGWnJGjew2waAc9evdhja/2LvePc898HJbHw0L+MTWy7NhpnELAvLQ==}
 
-  /react-native-builder-bob@0.20.4:
-    resolution: {integrity: sha512-3ZmYP8H7Fg2D8/JAPvxT78I4VWzf5DNMUf69cxWPw7Pukt+hHp1PSQ303af63uv1QXxWMJtrQ11+nuUfVqQf0Q==}
-    engines: {node: '>= 16.0.0'}
+  /react-native-builder-bob@0.23.2:
+    resolution: {integrity: sha512-ehv2XKS9cvPR5JR7FIpSx3qY7tULkljT2Kb82FBAxXsFLjqlRU1WfqHRLh6lytL2XqAxLQODpPfHUH53SsXnag==}
+    engines: {node: '>= 18.0.0'}
     hasBin: true
     dependencies:
       '@babel/core': 7.24.4
@@ -11544,8 +11537,6 @@ packages:
       prompts: 2.4.2
       which: 2.0.2
       yargs: 17.7.2
-    optionalDependencies:
-      jetifier: 2.0.0
     transitivePeerDependencies:
       - supports-color
     dev: true
