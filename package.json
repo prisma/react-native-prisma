@@ -33,18 +33,15 @@
     "expo.js"
   ],
   "scripts": {
-    "example": "yarn workspace react-native-prisma-example",
+    "example": "pnpm --filter example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
     "release": "release-it",
-    "ios:full": "yarn qe:sim && cd example && yarn ios",
     "clang": "clang-format -i ./cpp/*.cpp ./cpp/*.h && git add .",
-    "ios": "cd example && yarn ios",
-    "qe:sim": "cd ../prisma-engines/query-engine/query-engine-c-abi && make sim",
-    "qe:simr": "cd ../prisma-engines/query-engine/query-engine-c-abi && make sim-release"
+    "ios": "cd example && yarn ios"
   },
   "keywords": [
     "react-native",
@@ -87,7 +84,7 @@
     "react-native-url-polyfill": "2.0.0",
     "release-it": "^15.0.0",
     "turbo": "^1.10.7",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.5"
   },
   "resolutions": {
     "@types/react": "17.0.21"
@@ -99,10 +96,6 @@
     "react-native": "*",
     "react-native-quick-base64": "*"
   },
-  "workspaces": [
-    "example"
-  ],
-  "packageManager": "yarn@4.1.1",
   "engines": {
     "node": ">= 18.0.0"
   },
