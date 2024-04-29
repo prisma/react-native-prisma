@@ -1,0 +1,108 @@
+name: Test
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: Ref to run the tests on
+        type: string
+        required: false
+
+jobs:
+  lint-test:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Lint files
+        run: yarn lint
+
+      - name: Typecheck files
+        run: yarn typecheck
+
+  test-ios:
+    name: E2E test for iOS
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Install macOS dependencies
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
+          HOMEBREW_NO_INSTALL_CLEANUP: 1
+      - name: Install CocoaPods dependecies
+        working-directory: example
+        run: yarn pod-install
+
+      - name: Detox build
+        working-directory: example
+        run: yarn detox build --configuration ios.sim.release
+
+      - name: Detox test
+        working-directory: example
+        run: yarn detox test --configuration ios.sim.release --cleanup --headless
+
+  test-android:
+    name: E2E test for Android
+    runs-on: ubuntu-latest
+    steps:
+      # default runner has not enough space for creating emulators
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          android: false
+          tool-cache: true
+          dotnet: true
+          haskell: true
+          swap-storage: true
+          docker-images: true
+          large-packages: false
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          cache: gradle
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Detox build
+        working-directory: example
+        run: yarn detox build --configuration android.emu.release
+
+      - name: Enable KVM group perms # make android simulator use KVM and run much faster
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Detox test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          working-directory: example
+          api-level: 28
+          arch: x86_64
+          avd-name: Pixel_API_28
+          script: yarn detox test --configuration android.emu.release --headless

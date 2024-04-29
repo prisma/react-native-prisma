@@ -14,7 +14,7 @@
     "ios",
     "cpp",
     "*.podspec",
-    "QueryEngine.xcframework",
+    "engines",
     "!ios/build",
     "!android/build",
     "!android/gradle",
@@ -35,14 +35,17 @@
   "scripts": {
     "example": "yarn workspace react-native-prisma-example",
     "test": "jest",
+    "check-updates": "tsx scripts/check-updates.ts",
+    "bump-client": "tsx scripts/bump-client.ts",
+    "download-engine": "tsx scripts/download-engine.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "bob build",
-    "release": "release-it",
+    "prepare": "yarn download-engine && bob build",
     "ios:full": "yarn qe:sim && cd example && yarn ios",
     "clang": "clang-format -i ./cpp/*.cpp ./cpp/*.h && git add .",
-    "ios": "cd example && yarn ios"
+    "ios": "cd example && yarn ios",
+    "android": "cd example && yarn android"
   },
   "keywords": [
     "react-native",
@@ -65,11 +68,12 @@
   },
   "devDependencies": {
     "@evilmartians/lefthook": "^1.5.0",
-    "@prisma/client": "5.12.0",
+    "@prisma/client": "5.14.0-dev.22",
     "@react-native/eslint-config": "^0.72.2",
-    "@release-it/conventional-changelog": "^5.0.0",
+    "@tsconfig/react-native": "^3.0.5",
     "@types/jest": "^28.1.2",
     "@types/react": "~17.0.21",
+    "@types/unzipper": "^0.10.9",
     "clang-format": "^1.8.0",
     "del-cli": "^5.0.0",
     "eslint": "^8.4.1",
@@ -78,15 +82,19 @@
     "expo": "50.0.0",
     "expo-module-scripts": "^3.4.1",
     "jest": "^28.1.1",
+    "p-retry": "^6.2.0",
+    "pod-install": "0.2.0",
     "prettier": "^2.0.5",
+    "prisma": "5.14.0-dev.22",
     "react": "18.2.0",
     "react-native": "0.73.2",
     "react-native-builder-bob": "0.23.2",
     "react-native-quick-base64": "2.0.8",
     "react-native-url-polyfill": "2.0.0",
-    "release-it": "^15.0.0",
-    "turbo": "^1.10.7",
-    "typescript": "^5.4.3"
+    "tsx": "^4.7.3",
+    "typescript": "^5.4.5",
+    "unzipper": "^0.11.4",
+    "zx": "^7.2.3"
   },
   "resolutions": {
     "@types/react": "17.0.21"
@@ -112,23 +120,6 @@
       "<rootDir>/lib/"
     ]
   },
-  "release-it": {
-    "git": {
-      "commitMessage": "chore: release ${version}",
-      "tagName": "v${version}"
-    },
-    "npm": {
-      "publish": true
-    },
-    "github": {
-      "release": true
-    },
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": "angular"
-      }
-    }
-  },
   "eslintConfig": {
     "root": true,
     "extends": [
@@ -150,7 +141,8 @@
   },
   "eslintIgnore": [
     "node_modules/",
-    "lib/"
+    "lib/",
+    "plugin/build"
   ],
   "prettier": {
     "quoteProps": "consistent",
@@ -184,9 +176,6 @@
     }
   },
   "dependencies": {
-    "@tsconfig/react-native": "^3.0.5",
-    "@types/react-native": "^0.73.0",
-    "pod-install": "^0.2.0",
     "react-native-quick-base64": "^2.0.8",
     "react-native-url-polyfill": "^2.0.0"
   }

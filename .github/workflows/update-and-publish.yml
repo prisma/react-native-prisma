@@ -1,0 +1,126 @@
+on:
+  workflow_call:
+    inputs:
+      npmTag:
+        description: npm tag to publish to
+        type: string
+        required: true
+      version:
+        description: npm version to publish
+        type: string
+        required: true
+    secrets:
+      SLACK_WEBHOOK_URL:
+        required: true
+      NPM_TOKEN:
+        required: true
+  workflow_dispatch:
+    inputs:
+      npmTag:
+        description: npm tag to publish to
+        type: string
+        required: true
+      version:
+        description: npm version to publish
+        type: string
+        required: true
+
+concurrency:
+  group: publish
+
+jobs:
+  update:
+    name: Update client & engines on a temporary branch
+    runs-on: ubuntu-latest
+    env:
+      TMP_BRANCH_NAME: tmp/release-${{ inputs.npmTag }}-${{ inputs.version }}
+      NPM_TAG: ${{ inputs.npmTag }}
+      NPM_VERSION: ${{ inputs.version }}
+    outputs:
+      tmpBranch: ${{ steps.do-update.outputs.tmpBranch }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Update version in temporary branch
+        id: do-update
+        run: |
+          git checkout -b "$TMP_BRANCH_NAME"
+          yarn bump-client "$NPM_TAG" "$NPM_VERSION"
+          git config user.email prismabots@gmail.com
+          git config user.name Prismo
+          git commit -am "chore(deps): Update prisma to $NPM_VERSION on $NPM_TAG"
+          git push origin "$TMP_BRANCH_NAME"
+          echo "tmpBranch=$TMP_BRANCH_NAME" >> "$GITHUB_OUTPUT"
+
+  test:
+    name: Test release branch
+    needs:
+      - update
+    uses: ./.github/workflows/test.yml
+    with:
+      ref: ${{ needs.update.outputs.tmpBranch }}
+    secrets: inherit
+
+  publish:
+    name: Merge temp branch back and publish
+    runs-on: ubuntu-latest
+    needs:
+      - update
+      - test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Merge temp release branch back into main
+        env:
+          TMP_BRANCH_NAME: ${{ needs.update.outputs.tmpBranch }}
+        run: |
+          git fetch origin "$TMP_BRANCH_NAME"
+          git merge --ff-only "origin/$TMP_BRANCH_NAME"
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Publish
+        env:
+          NPM_TAG: ${{ inputs.npmTag }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: yarn npm publish --tag "$NPM_TAG"
+
+      - name: Push
+        run: git push origin main
+
+  finalize:
+    name: Cleanup temporary branch
+    runs-on: ubuntu-latest
+    needs:
+      - update
+      - test
+      - publish
+    if: always()
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Remove temporary branch
+        env:
+          TMP_BRANCH_NAME: ${{ needs.update.outputs.tmpBranch }}
+        run: |
+          git push --delete origin "$TMP_BRANCH_NAME"
+
+      - name: Set current job url in SLACK_FOOTER env var
+        if: ${{ failure() }}
+        run: echo "SLACK_FOOTER=<$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Click here to go to the job logs>" >> $GITHUB_ENV
+
+      - name: Slack Notification on Failure
+        if: ${{ failure() }}
+        uses: rtCamp/action-slack-notify@v2.3.0
+        env:
+          SLACK_TITLE: 'React Native publish failed'
+          SLACK_COLOR: '#FF0000'
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_CHANNEL: feed-react-native-publish-failures

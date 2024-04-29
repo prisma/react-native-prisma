@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client/react-native';
-import Chance from 'chance';
 import {
   reactiveHooksExtension,
   reactiveQueriesExtension,
 } from '@prisma/react-native';
+import Chance from 'chance';
 
 const chance = new Chance();
 

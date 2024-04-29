@@ -15,10 +15,8 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/ospfranco/react-native-prisma.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm}", "cpp/**/*.{hpp,cpp,c,h}"
-  # The header file is there for Android, for iOS is already packaged in the xcframework, so we need to exclude it
-  s.exclude_files = "cpp/query_engine.h"
 
-  s.vendored_frameworks = "QueryEngine.xcframework"
+  s.vendored_frameworks = "engines/ios/QueryEngine.xcframework"
 
   s.dependency "React-callinvoker"
   s.dependency "React"
