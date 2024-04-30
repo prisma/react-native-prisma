@@ -2,7 +2,7 @@
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "react-native-prisma": ["./src/index"]
+      "@prisma/react-native": ["./src/index"]
     }
   },
   "exclude": ["plugin"]

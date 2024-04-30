@@ -8,8 +8,8 @@ set (BUILD_DIR ${CMAKE_SOURCE_DIR}/build)
 
 
 add_library(
-        ${PACKAGE_NAME}
-        SHARED
+    ${PACKAGE_NAME}
+    SHARED
     ../cpp/react-native-prisma.cpp
     ../cpp/macros.h
     ../cpp/QueryEngineHostObject.cpp
@@ -17,14 +17,15 @@ add_library(
     ../cpp/react-native-prisma.h
     ../cpp/ThreadPool.cpp
     ../cpp/ThreadPool.h
-    ../cpp/query_engine.h
     ../cpp/utils.h
     ../cpp/utils.cpp
+    ../engines/android/query_engine.h
     cpp-adapter.cpp
 )
 
 include_directories(
     ../cpp
+    ../engines/android
 )
 
 set_target_properties(
@@ -37,12 +38,13 @@ set_target_properties(
 find_package(ReactAndroid REQUIRED CONFIG)
 find_package(fbjni REQUIRED CONFIG)
 
+cmake_path(SET QUERY_ENGINE_LIB ${CMAKE_CURRENT_SOURCE_DIR}/../engines/android/jniLibs/${ANDROID_ABI}/libquery_engine.a NORMALIZE)
+
 add_library(query_engine STATIC IMPORTED)
-set_target_properties(query_engine PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/jniLibs/${ANDROID_ABI}/libquery_engine.a)
+set_target_properties(query_engine PROPERTIES IMPORTED_LOCATION ${QUERY_ENGINE_LIB})
 
 target_link_libraries(
   ${PACKAGE_NAME}
-  # ${CMAKE_CURRENT_SOURCE_DIR}/jniLibs/${ANDROID_ABI}/libquery_engine.a
   query_engine
   fbjni::fbjni
   ReactAndroid::jsi

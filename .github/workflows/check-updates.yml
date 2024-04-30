@@ -1,0 +1,45 @@
+name: Check for a new client version
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  check-update:
+    runs-on: ubuntu-latest
+    outputs:
+      latest: ${{ steps.check-update.outputs.latest }}
+      dev: ${{ steps.check-update.outputs.dev }}
+      integration: ${{ steps.check-update.outputs.dev }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Check for updates
+        id: check-update
+        run: yarn check-updates
+
+  update-latest:
+    name: Update latest tag
+    needs:
+      - check-update
+    if: ${{ needs.check-update.outputs.latest != ''}}
+    uses: ./.github/workflows/update-and-publish.yml
+    secrets: inherit
+    with:
+      npmTag: latest
+      version: ${{ needs.check-update.outputs.latest }}
+
+  update-dev:
+    name: Update dev tag
+    needs:
+      - check-update
+    if: ${{ needs.check-update.outputs.dev != ''}}
+    uses: ./.github/workflows/update-and-publish.yml
+    secrets: inherit
+    with:
+      npmTag: dev
+      version: ${{ needs.check-update.outputs.dev }}
