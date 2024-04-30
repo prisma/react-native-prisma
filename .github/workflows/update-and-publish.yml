@@ -96,20 +96,19 @@ jobs:
         run: git push origin main
 
   notify-on-failure:
+    name: Notify on publish failure
     needs:
       - update
       - test
       - publish
-    if: ${{ always() && (needs.update.result == 'failure' || needs.test.result == 'failure'  || needs.publish.result == 'failure' )}}
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
 
     runs-on: ubuntu-latest
     steps:
       - name: Set current job url in SLACK_FOOTER env var
-        if: ${{ failure() }}
         run: echo "SLACK_FOOTER=<$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|Click here to go to the job logs>" >> $GITHUB_ENV
 
       - name: Slack Notification on Failure
-        if: ${{ failure() }}
         uses: rtCamp/action-slack-notify@v2.3.0
         env:
           SLACK_TITLE: 'React Native publish failed'
