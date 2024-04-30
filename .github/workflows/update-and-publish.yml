@@ -1,3 +1,4 @@
+name: Update prisma client and publish the package
 on:
   workflow_call:
     inputs:
