@@ -26,6 +26,11 @@ export const reactiveHooksExtension = () =>
 
     return client.$extends({
       name: 'prisma-reactive-hooks-extension',
+      client: {
+        $refreshSubscriptions: async () => {
+          await refreshSubscriptions();
+        }
+      },
       model: {
         $allModels: {
           useFindMany<T, A>(
