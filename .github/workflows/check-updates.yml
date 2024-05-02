@@ -3,12 +3,24 @@ on:
   schedule:
     - cron: '*/5 * * * *'
   workflow_dispatch:
-concurrency:
-  group: check-update
 
 jobs:
+  skip-duplicates:
+    name: Skip update if job is already in progress
+    runs-on: ubuntu-latest
+    outputs:
+      should-skip: ${{ steps.skip-check.outputs.should_skip }}
+    steps:
+      - id: skip-check
+        uses: fkirc/skip-duplicate-actions@v5
+        with:
+          skip_after_successful_duplicate: 'false'
+          concurrent_skipping: 'always'
+
   check-update:
     runs-on: ubuntu-latest
+    needs: skip-duplicates
+    if: ${{ needs.skip-duplicates.outputs.should-skip != 'true' }}
     outputs:
       latest: ${{ steps.check-update.outputs.latest }}
       dev: ${{ steps.check-update.outputs.dev }}
