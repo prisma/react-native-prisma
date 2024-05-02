@@ -1,12 +1,12 @@
 # React Native Prisma
 
-A Prisma engine adaptation for React Native.
+A Prisma engine adaptation for React Native. Please note that this is a [Preview Feature](https://www.prisma.io/docs/orm/reference/preview-features/client-preview-features)
 
 ## Installation
 
 ```
-yarn add --exact @prisma/react-native react-native-quick-base64 react-native-url-polyfill @prisma/client
-npx pod-install
+npm i --save --save-exact @prisma/client@5.14.0-dev.26 @prisma/react-native@5.14.0-dev.26 react-native-quick-base64
+npx expo prebuild --clean
 ```
 
 ### Bare react native projects
@@ -50,12 +50,41 @@ For expo this process is automated into prebuild. Modify your `app.json` by addi
 }
 ```
 
-## Reactive queries
+## Activate preview feature
 
-This packages contains an extension to the prisma client that allows you to use reactive queries. Use at your own convinience and care since it might introduce large re-renders in your app.
+React Native support is currently a preview feature and has to be activated in your schema.prisma file:
 
 ```ts
-import { PrismaClient } from '@prisma/client/reactNative';
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["reactNative"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./app.db"
+}
+
+// Your data model
+
+model User {
+  id           Int     @id @default(autoincrement())
+  name         String
+}
+```
+
+you can now generate the Prisma Client like this:
+
+```
+npx prisma@5.14.0-dev.26 generate
+```
+
+## Reactive queries
+
+This package contains an extension to the prisma client that allows you to use reactive queries. Use at your own convinience and care since it might introduce large re-renders in your app.
+
+```ts
+import { PrismaClient } from '@prisma/client/react-native';
 import { reactiveHooksExtension } from '@prisma/react-native';
 
 const baseClient = new PrismaClient();
@@ -66,8 +95,8 @@ export const extendedClient = baseClient.$extends(reactiveHooksExtension);
 Then in your React component you can use the hook:
 
 ```tsx
-import {Text} from 'react-native';
-import {extendedClient} from './myDbModule';
+import { Text } from 'react-native';
+import { extendedClient } from './myDbModule';
 
 export default function App {
 
@@ -75,7 +104,7 @@ export default function App {
   const users = extendedClient.user.useFindMany();
 
   return (
-    <Text>{users}</Text>
+    <Text>{ users }</Text>
   )
 }
 ```
@@ -99,7 +128,7 @@ useFindUnique();
 It is also possible to use callbacks for this queries in case you are not using hooks, but you still want to get notified when data changes
 
 ```ts
-import { PrismaClient } from '@prisma/client/rn';
+import { PrismaClient } from '@prisma/client/react-native';
 import { reactiveQueriesExtension } from '@prisma/react-native';
 
 const baseClient = new PrismaClient();
@@ -113,11 +142,9 @@ On application start you need to run the migrations to make sure the database is
 
 ```ts
 import '@prisma/react-native';
-import { PrismaClient } from '@prisma/client/rn';
-import Chance from 'chance';
-const chance = new Chance();
+import { PrismaClient } from '@prisma/client/react-native';
 
-const prisma = new PrismaClient();
+const basePrisma = new PrismaClient();
 
 async function initializeDb() {
   try {
@@ -131,6 +158,4 @@ async function initializeDb() {
 }
 ```
 
-Prisma being born for server workloads has a different philosophy regarding migrations. Since the client types are generated based on the schema, a failed migration is dangereous and will most likely fail on runtime. Therefore, if a migration has failed, we consider this a catasthropic fail which will need a complete reset of the database or re-install on part of the user.
-
-// TODO add more documentation or a link to how to properly do and test migrations
+Care must be taken to ensure migrations will always succeed. Migrations will be executed on the users device at runtime, and if they fail to run, your application will most likely be unable to work correctly. In such a situation, the only option for the user might be to delete all app data and start over.

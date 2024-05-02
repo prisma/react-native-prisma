@@ -25,6 +25,11 @@ export const reactiveQueriesExtension = () =>
 
     return client.$extends({
       name: 'prisma-reactive-queries-extension',
+      client: {
+        $refreshSubscriptions: async () => {
+          await refreshSubscriptions();
+        }
+      },
       model: {
         $allModels: {
           findMany<T, A>(
