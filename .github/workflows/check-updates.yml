@@ -14,6 +14,7 @@ jobs:
       - id: skip-check
         uses: fkirc/skip-duplicate-actions@v5
         with:
+          do_not_skip: '[]'
           skip_after_successful_duplicate: 'false'
           concurrent_skipping: 'always'
 
