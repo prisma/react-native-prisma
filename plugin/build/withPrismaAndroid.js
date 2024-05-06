@@ -3,7 +3,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 exports.withPrismaAndroid = void 0;
 const config_plugins_1 = require('expo/config-plugins');
 const SCRIPT_LINE =
-  'apply from: "../../node_modules/react-native-prisma/react-native-prisma.gradle"';
+  'apply from: "../../node_modules/@prisma/react-native/react-native-prisma.gradle"';
 const withPrismaAndroid = (config) => {
   const cfg = (0, config_plugins_1.withAppBuildGradle)(config, (config) => {
     if (config.modResults.language === 'groovy') {
