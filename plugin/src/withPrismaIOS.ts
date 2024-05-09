@@ -31,6 +31,7 @@ export function addPrismMigrationScriptCopy(script: string): string {
     `
     
     PRISMA_MIGRATIONS="../node_modules/@prisma/react-native/copy-migrations.sh"
+    chmod a+x ../node_modules/@prisma/react-native/copy-migrations.sh
 
     /bin/sh -c "$PRISMA_MIGRATIONS"`
   );
