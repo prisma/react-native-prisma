@@ -1,10 +1,11 @@
 import fs from 'node:fs/promises';
-import { $ } from 'zx';
 import pRetry from 'p-retry';
+import { $ } from 'zx';
+
 import { NPM_TAGS, type NpmTag, readVersionFile } from './utils';
 
 async function main() {
-  for (let tag of NPM_TAGS) {
+  for (const tag of NPM_TAGS.filter((tag) => tag !== 'integration')) {
     await checkUpdate(tag);
   }
 }
