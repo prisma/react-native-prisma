@@ -3,11 +3,10 @@ import path from 'node:path';
 import { pipeline } from 'node:stream/promises';
 import { Extract } from 'unzipper';
 
-export const NPM_TAGS = ['dev', 'latest'] as const;
-
-type VersionFile = 'prisma-dev' | 'prisma-latest' | 'engine';
-
+export const NPM_TAGS = ['dev', 'latest', 'integration'] as const;
 export type NpmTag = (typeof NPM_TAGS)[number];
+
+type VersionFile = `prisma-${NpmTag}` | 'engine';
 
 export function ensureNpmTag(str: string): asserts str is NpmTag {
   if (!(NPM_TAGS as readonly string[]).includes(str)) {
