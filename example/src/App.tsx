@@ -80,12 +80,12 @@ export default function App() {
           {e2eSuccess ? (
             <View
               className="rounded-full h-3 w-3 bg-green-500"
-              testID="test_indicator"
+              testID="test_indicator_success"
             />
           ) : (
             <View
               className="rounded-full h-3 w-3 bg-red-500"
-              testID="test_indicator"
+              testID="test_indicator_failure"
             />
           )}
         </View>
