@@ -5,7 +5,7 @@ A Prisma engine adaptation for React Native. Please note that this is a [Preview
 ## Installation
 
 ```
-npm i --save --save-exact @prisma/client@5.14.0-dev.67 @prisma/react-native@5.14.0-dev.67 react-native-quick-base64
+npm i --save --save-exact @prisma/client@latest @prisma/react-native@latest react-native-quick-base64
 npx expo prebuild --clean
 ```
 
@@ -76,7 +76,7 @@ model User {
 you can now generate the Prisma Client like this:
 
 ```
-npx prisma@5.14.0-dev.67 generate
+npx prisma@latest generate
 ```
 
 ## Reactive queries
