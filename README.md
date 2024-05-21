@@ -89,7 +89,7 @@ import { reactiveHooksExtension } from '@prisma/react-native';
 
 const baseClient = new PrismaClient();
 
-export const extendedClient = baseClient.$extends(reactiveHooksExtension);
+export const extendedClient = baseClient.$extends(reactiveHooksExtension());
 ```
 
 Then in your React component you can use the hook:
@@ -133,7 +133,7 @@ import { reactiveQueriesExtension } from '@prisma/react-native';
 
 const baseClient = new PrismaClient();
 
-export const extendedClient = baseClient.$extends(reactiveQueriesExtension);
+export const extendedClient = baseClient.$extends(reactiveQueriesExtension());
 ```
 
 ## Applying migrations
