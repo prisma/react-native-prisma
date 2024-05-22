@@ -1,6 +1,6 @@
 # Early Access: Prisma ORM for React Native and Expo
 
-A Prisma engine adaptation for React Native. Please note that this is in [Early Access](https://www.prisma.io/docs/orm/reference/preview-features/client-preview-features)
+A Prisma engine adaptation for React Native. Please note that this is in [Early Access](https://www.prisma.io/docs/orm/more/releases#early-access)
 
 ## Installation
 
