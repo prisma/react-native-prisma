@@ -1,6 +1,6 @@
-# React Native Prisma
+# Early Access: Prisma ORM for React Native and Expo
 
-A Prisma engine adaptation for React Native. Please note that this is a [Preview Feature](https://www.prisma.io/docs/orm/reference/preview-features/client-preview-features)
+A Prisma engine adaptation for React Native. Please note that this is in [Early Access](https://www.prisma.io/docs/orm/more/releases#early-access)
 
 ## Installation
 
@@ -9,13 +9,13 @@ npm i --save --save-exact @prisma/client@latest @prisma/react-native@latest reac
 npx expo prebuild --clean
 ```
 
-### Bare react native projects
+### Bare React Native projects
 
-For bare project you will need to modify the building process to run a couple of scripts that take care of bundling the migrations you generate inside the final app bundle.
+For bare project you will need to modify the build process to run a couple of scripts that take care of bundling the migrations you generate inside the final app bundle.
 
 #### iOS
 
-Go into `XCode` → `Build Phases` → `Bundle React Native Code and images` and modify it so that it looks like this:
+Go into `Xcode` → `Build Phases` → `Bundle React Native Code and images` and modify it so that it looks like this:
 
 ![xcode_build_phases](xcode.png)
 
@@ -50,7 +50,7 @@ For expo this process is automated into prebuild. Modify your `app.json` by addi
 }
 ```
 
-## Activate preview feature
+## Enable React Native support in your schema file
 
 React Native support is currently a preview feature and has to be activated in your schema.prisma file:
 
@@ -81,7 +81,7 @@ npx prisma@latest generate
 
 ## Reactive queries
 
-This package contains an extension to the prisma client that allows you to use reactive queries. Use at your own convinience and care since it might introduce large re-renders in your app.
+This package contains an extension to the Prisma client that allows you to use reactive queries. Use at your own convinience and care since it might introduce large re-renders in your app.
 
 ```ts
 import { PrismaClient } from '@prisma/client/react-native';
@@ -138,7 +138,7 @@ export const extendedClient = baseClient.$extends(reactiveQueriesExtension());
 
 ## Applying migrations
 
-On application start you need to run the migrations to make sure the database is in a consistent state with your prisma generated client:
+On application start you need to run the migrations to make sure the database is in a consistent state with your Prisma generated client:
 
 ```ts
 import '@prisma/react-native';
