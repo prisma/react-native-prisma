@@ -109,7 +109,7 @@ export default function App {
 }
 ```
 
-Bare in mind, for the reactive queries to work you have to use the extended client to modify the data:
+Bear in mind, for the reactive queries to work you have to use the extended client to modify the data:
 
 ```ts
 extendedClient.user.create({ ...userData });
