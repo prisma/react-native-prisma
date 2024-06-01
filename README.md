@@ -148,7 +148,7 @@ const basePrisma = new PrismaClient();
 
 async function initializeDb() {
   try {
-    basePrisma.$applyPendingMigrations();
+    await basePrisma.$applyPendingMigrations();
   } catch (e) {
     console.error(`failed to apply migrations: ${e}`);
     throw new Error(
