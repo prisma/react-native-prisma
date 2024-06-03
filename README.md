@@ -4,16 +4,37 @@ A Prisma engine adaptation for React Native. Please note that this is in [Early 
 
 ## Installation
 
+Install `@prisma/client`, `@prisma/react-native` and the `react-native-quick-base64` dependency:
+
 ```
 npm i --save --save-exact @prisma/client@latest @prisma/react-native@latest react-native-quick-base64
+```
+
+To ensure migration files are copied into the app bundle you need to either enable the Expo plugin or configure ios and Android manually:
+
+### Expo
+
+If you are using Expo, you can add the expo plugin to automatically copy migration files. Modify your `app.json` by adding the react-native-prisma plugin:
+
+```json
+{
+  "expo": {
+    // ... The rest of your expo config
+    "plugins": ["@prisma/react-native"]
+  }
+}
+```
+
+To activate the plugin, run prebuild:
+
+```
 npx expo prebuild --clean
 ```
 
-### Bare React Native projects
+The Expo plugin simply configures the Android and ios projects during the prebuild phase. If you are not using Expo, you can do this manually:
 
-For bare project you will need to modify the build process to run a couple of scripts that take care of bundling the migrations you generate inside the final app bundle.
 
-#### iOS
+### iOS
 
 Go into `Xcode` → `Build Phases` → `Bundle React Native Code and images` and modify it so that it looks like this:
 
@@ -29,7 +50,7 @@ PRISMA_MIGRATIONS="../node_modules/@prisma/react-native/copy-migrations.sh" # Ad
 /bin/sh -c "$WITH_ENVIRONMENT $PRISMA_MIGRATIONS $REACT_NATIVE_XCODE" # Add it to the list of running scripts
 ```
 
-#### Android
+### Android
 
 For Android you need to modify your apps `app/Build.gradle`. Add the following at the top of the file.
 
@@ -37,22 +58,9 @@ For Android you need to modify your apps `app/Build.gradle`. Add the following a
 apply from: "../../node_modules/@prisma/react-native/react-native-prisma.gradle"
 ```
 
-### Expo
-
-For expo this process is automated into prebuild. Modify your `app.json` by adding the react-native-prisma plugin.
-
-```json
-{
-  "expo": {
-    // ... The rest of your expo config
-    "plugins": ["@prisma/react-native"]
-  }
-}
-```
-
 ## Enable React Native support in your schema file
 
-React Native support is currently a preview feature and has to be activated in your schema.prisma file:
+React Native support is currently a preview feature and has to be activated in your schema.prisma file. You can place this file in the root of the application:
 
 ```ts
 generator client {
@@ -72,6 +80,13 @@ model User {
   name         String
 }
 ```
+
+You can create the database file and initial migration using Prisma migrate:
+
+```
+npx prisma@latest migrate dev
+```
+
 
 you can now generate the Prisma Client like this:
 
@@ -144,11 +159,11 @@ On application start you need to run the migrations to make sure the database is
 import '@prisma/react-native';
 import { PrismaClient } from '@prisma/client/react-native';
 
-const basePrisma = new PrismaClient();
+const baseClient = new PrismaClient();
 
 async function initializeDb() {
   try {
-    basePrisma.$applyPendingMigrations();
+    baseClient.$applyPendingMigrations();
   } catch (e) {
     console.error(`failed to apply migrations: ${e}`);
     throw new Error(
