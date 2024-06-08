@@ -13,6 +13,29 @@ declare global {
   var __PrismaProxy: PrismaProxy | undefined;
 }
 
+const errorResolutions = [
+  `1. Ensure @prisma/react-native is added to the plugins section in app.json`,
+
+  `2. Ensure at least one migration exists:
+
+    $ prisma migrate dev`,
+
+  `3. Try removing the node_modules/ folder and running the prebuild command:
+
+    $ rm -rf node_modules/
+    $ npx expo prebuild --clean
+`,
+  `4. If in a monorepo, ensure the application's package.json also has the required Prisma dependencies:
+
+    $ npm i @prisma/client@latest @prisma/react-native@latest react-native-quick-base64
+    $ yarn add @prisma/client@latest @prisma/react-native@latest react-native-quick-base64
+`,
+];
+
+const makeErrorMessage = (message: string) => {
+  return [message, errorResolutions.join('\n\n')].join('\n\n');
+};
+
 // @ts-expect-error
 const isTurboModuleEnabled = global.__turboModuleProxy != null;
 
@@ -21,13 +44,23 @@ const PrismaModule = isTurboModuleEnabled
   : NativeModules.Prisma;
 
 if (!PrismaModule) {
-  throw new Error('🟥 @prisma/react-native failed to initialize');
+  throw new Error(
+    makeErrorMessage('🟥 @prisma/react-native failed to initialize')
+  );
 }
 
-PrismaModule.install();
+try {
+  PrismaModule.install();
+} catch {
+  throw new Error(
+    makeErrorMessage(`🟥 @prisma/react-native failed to install`)
+  );
+}
 
 if (!global.__PrismaProxy) {
-  throw new Error('🟥 prisma/react-native C++ bindings failed to initialize');
+  throw new Error(
+    makeErrorMessage('🟥 prisma/react-native C++ bindings failed to initialize')
+  );
 }
 
 // Wrap the create function to stringify the env variables if necessary
