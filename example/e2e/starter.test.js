@@ -9,6 +9,6 @@ describe('Example', () => {
   });
 
   it('Show basic test passed indicator', async () => {
-    await expect(element(by.id('test_indicator'))).toBeVisible();
+    await expect(element(by.id('test_indicator_success'))).toBeVisible();
   });
 });
