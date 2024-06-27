@@ -174,3 +174,11 @@ async function initializeDb() {
 ```
 
 Care must be taken to ensure migrations will always succeed. Migrations will be executed on the users device at runtime, and if they fail to run, your application will most likely be unable to work correctly. In such a situation, the only option for the user might be to delete all app data and start over.
+
+## Material
+
+🎥 Watch the introduction at App.js here: https://www.youtube.com/watch?v=keZYUjAYSJM
+
+📖 Read the announcement post here: https://www.prisma.io/blog/bringing-prisma-orm-to-react-native-and-expo
+
+📹 Watch Catalin build an app with Prisma and Expo here: https://www.youtube.com/watch?v=65Iqes0lxpQ
