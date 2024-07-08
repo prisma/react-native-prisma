@@ -4,16 +4,37 @@ A Prisma engine adaptation for React Native. Please note that this is in [Early 
 
 ## Installation
 
+Install `@prisma/client`, `@prisma/react-native` and the `react-native-quick-base64` dependency:
+
 ```
 npm i --save --save-exact @prisma/client@latest @prisma/react-native@latest react-native-quick-base64
+```
+
+To ensure migration files are copied into the app bundle you need to either enable the Expo plugin or configure ios and Android manually:
+
+### Expo
+
+If you are using Expo, you can add the expo plugin to automatically copy migration files. Modify your `app.json` by adding the react-native-prisma plugin:
+
+```json
+{
+  "expo": {
+    // ... The rest of your expo config
+    "plugins": ["@prisma/react-native"]
+  }
+}
+```
+
+To activate the plugin, run prebuild:
+
+```
 npx expo prebuild --clean
 ```
 
-### Bare React Native projects
+The Expo plugin simply configures the Android and ios projects during the prebuild phase. If you are not using Expo, you can do this manually:
 
-For bare project you will need to modify the build process to run a couple of scripts that take care of bundling the migrations you generate inside the final app bundle.
 
-#### iOS
+### iOS
 
 Go into `Xcode` → `Build Phases` → `Bundle React Native Code and images` and modify it so that it looks like this:
 
@@ -29,7 +50,7 @@ PRISMA_MIGRATIONS="../node_modules/@prisma/react-native/copy-migrations.sh" # Ad
 /bin/sh -c "$WITH_ENVIRONMENT $PRISMA_MIGRATIONS $REACT_NATIVE_XCODE" # Add it to the list of running scripts
 ```
 
-#### Android
+### Android
 
 For Android you need to modify your apps `app/Build.gradle`. Add the following at the top of the file.
 
@@ -37,22 +58,9 @@ For Android you need to modify your apps `app/Build.gradle`. Add the following a
 apply from: "../../node_modules/@prisma/react-native/react-native-prisma.gradle"
 ```
 
-### Expo
-
-For expo this process is automated into prebuild. Modify your `app.json` by adding the react-native-prisma plugin.
-
-```json
-{
-  "expo": {
-    // ... The rest of your expo config
-    "plugins": ["@prisma/react-native"]
-  }
-}
-```
-
 ## Enable React Native support in your schema file
 
-React Native support is currently a preview feature and has to be activated in your schema.prisma file:
+React Native support is currently a preview feature and has to be activated in your schema.prisma file. You can place this file in the root of the application:
 
 ```ts
 generator client {
@@ -73,6 +81,13 @@ model User {
 }
 ```
 
+You can create the database file and initial migration using Prisma migrate:
+
+```
+npx prisma@latest migrate dev
+```
+
+
 you can now generate the Prisma Client like this:
 
 ```
@@ -81,7 +96,7 @@ npx prisma@latest generate
 
 ## Reactive queries
 
-This package contains an extension to the Prisma client that allows you to use reactive queries. Use at your own convinience and care since it might introduce large re-renders in your app.
+This package contains an extension to the Prisma client that allows you to use reactive queries. Use at your own convenience and care since it might introduce large re-renders in your app.
 
 ```ts
 import { PrismaClient } from '@prisma/client/react-native';
@@ -109,7 +124,7 @@ export default function App {
 }
 ```
 
-Bare in mind, for the reactive queries to work you have to use the extended client to modify the data:
+Bear in mind, for the reactive queries to work you have to use the extended client to modify the data:
 
 ```ts
 extendedClient.user.create({ ...userData });
@@ -144,7 +159,7 @@ On application start you need to run the migrations to make sure the database is
 import '@prisma/react-native';
 import { PrismaClient } from '@prisma/client/react-native';
 
-const basePrisma = new PrismaClient();
+const baseClient = new PrismaClient();
 
 async function initializeDb() {
   try {
@@ -152,10 +167,18 @@ async function initializeDb() {
   } catch (e) {
     console.error(`failed to apply migrations: ${e}`);
     throw new Error(
-      'Applying migrations failed, your app is now in an inconsistent state. We cannot guarantee safety, it is now your responsability to reset the database or tell the user to re-install the app'
+      'Applying migrations failed, your app is now in an inconsistent state. We cannot guarantee safety, it is now your responsibility to reset the database or tell the user to re-install the app'
     );
   }
 }
 ```
 
 Care must be taken to ensure migrations will always succeed. Migrations will be executed on the users device at runtime, and if they fail to run, your application will most likely be unable to work correctly. In such a situation, the only option for the user might be to delete all app data and start over.
+
+## Material
+
+🎥 Watch the introduction at App.js here: https://www.youtube.com/watch?v=keZYUjAYSJM
+
+📖 Read the announcement post here: https://www.prisma.io/blog/bringing-prisma-orm-to-react-native-and-expo
+
+📹 Watch Catalin build an app with Prisma and Expo here: https://www.youtube.com/watch?v=65Iqes0lxpQ
