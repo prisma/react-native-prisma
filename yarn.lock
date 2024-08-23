@@ -3269,61 +3269,61 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:5.19.0-dev.13":
-  version: 5.19.0-dev.13
-  resolution: "@prisma/client@npm:5.19.0-dev.13"
+"@prisma/client@npm:5.19.0-dev.14":
+  version: 5.19.0-dev.14
+  resolution: "@prisma/client@npm:5.19.0-dev.14"
   peerDependencies:
     prisma: "*"
   peerDependenciesMeta:
     prisma:
       optional: true
-  checksum: 10/2ded6a763887ac19ba56bf1133598c23869da9f7d4e3f140fa2c3de298ec9296463706896faa4bbc07403cdb6d2973586134ad06875c47a0fdfab6e90e571199
+  checksum: 10/d62692b9a8cc8809a658b66d88b41cb9d792a8d4085c418af6cfc5c1016c3d61bb08169c1dea91fb4e865dcd4de3851285a8d1ae05f33362eac1565f599c0d1d
   languageName: node
   linkType: hard
 
-"@prisma/debug@npm:5.19.0-dev.13":
-  version: 5.19.0-dev.13
-  resolution: "@prisma/debug@npm:5.19.0-dev.13"
-  checksum: 10/438e8cea7fd6bfeab67c8b77be3f7a8f92a4b2702fd1b1f4725ddb53dda8059a854e4c2cc3a104eb87bd0898a0c9ed90267995e2f726b29d2c11e37eb3df504e
+"@prisma/debug@npm:5.19.0-dev.14":
+  version: 5.19.0-dev.14
+  resolution: "@prisma/debug@npm:5.19.0-dev.14"
+  checksum: 10/a67924681a9e6f9cfb7ea21d168a5080119997f85240e3fe92f347cf4634688ea652c94277e4f56501c759efbc82f2b749589007d0b7ee139eea3485e2cee7d8
   languageName: node
   linkType: hard
 
-"@prisma/engines-version@npm:5.19.0-23.c356d1b4064663e128504e183e2b0cbe5fcdb063":
-  version: 5.19.0-23.c356d1b4064663e128504e183e2b0cbe5fcdb063
-  resolution: "@prisma/engines-version@npm:5.19.0-23.c356d1b4064663e128504e183e2b0cbe5fcdb063"
-  checksum: 10/27dea643b1bacaf1dd463a22980e65261feeacd939434eb9863c7f2cb4a67c0cb0f21462bcdd925679e598c7d295314285354c7ad626338e801411710f1a14df
+"@prisma/engines-version@npm:5.19.0-26.8a3982b39f6dc8065ba99a0d212b3e18a5cd2d1d":
+  version: 5.19.0-26.8a3982b39f6dc8065ba99a0d212b3e18a5cd2d1d
+  resolution: "@prisma/engines-version@npm:5.19.0-26.8a3982b39f6dc8065ba99a0d212b3e18a5cd2d1d"
+  checksum: 10/06a9ce9592cd1253ffa736b699a265c48cb5cff41b5faeda81ed0c1f1878bf6af2d85c4e3978318d4ed94e5aa3d4cd72c5ba23c9b82200c87b9e549619abc465
   languageName: node
   linkType: hard
 
-"@prisma/engines@npm:5.19.0-dev.13":
-  version: 5.19.0-dev.13
-  resolution: "@prisma/engines@npm:5.19.0-dev.13"
+"@prisma/engines@npm:5.19.0-dev.14":
+  version: 5.19.0-dev.14
+  resolution: "@prisma/engines@npm:5.19.0-dev.14"
   dependencies:
-    "@prisma/debug": "npm:5.19.0-dev.13"
-    "@prisma/engines-version": "npm:5.19.0-23.c356d1b4064663e128504e183e2b0cbe5fcdb063"
-    "@prisma/fetch-engine": "npm:5.19.0-dev.13"
-    "@prisma/get-platform": "npm:5.19.0-dev.13"
-  checksum: 10/d4ea166c5715fc843b12ef388994f971dc34ebfbcd4609514728e86de6020f66556b0e9ea47df42c1a72fdcead78b81fc3d665f2a96a1a06113c0b9db0a4ca2e
+    "@prisma/debug": "npm:5.19.0-dev.14"
+    "@prisma/engines-version": "npm:5.19.0-26.8a3982b39f6dc8065ba99a0d212b3e18a5cd2d1d"
+    "@prisma/fetch-engine": "npm:5.19.0-dev.14"
+    "@prisma/get-platform": "npm:5.19.0-dev.14"
+  checksum: 10/f15d3525aabf013b6a599927073d092eebf04460361c7f0ecc0cfd1bc8a131b32a8820d4974199f8f2ad222f47818c09983d9ca06d41342b8da1fd22cf4ae2e2
   languageName: node
   linkType: hard
 
-"@prisma/fetch-engine@npm:5.19.0-dev.13":
-  version: 5.19.0-dev.13
-  resolution: "@prisma/fetch-engine@npm:5.19.0-dev.13"
+"@prisma/fetch-engine@npm:5.19.0-dev.14":
+  version: 5.19.0-dev.14
+  resolution: "@prisma/fetch-engine@npm:5.19.0-dev.14"
   dependencies:
-    "@prisma/debug": "npm:5.19.0-dev.13"
-    "@prisma/engines-version": "npm:5.19.0-23.c356d1b4064663e128504e183e2b0cbe5fcdb063"
-    "@prisma/get-platform": "npm:5.19.0-dev.13"
-  checksum: 10/30c3193d731642c94c3c237540838552f3968d880c191ea2f990788f19c2ad471fc28b4d24fb11331426ac6a54552e8b192f214b6833da08ae5137522c5f7d69
+    "@prisma/debug": "npm:5.19.0-dev.14"
+    "@prisma/engines-version": "npm:5.19.0-26.8a3982b39f6dc8065ba99a0d212b3e18a5cd2d1d"
+    "@prisma/get-platform": "npm:5.19.0-dev.14"
+  checksum: 10/0606237f373074938389b93ce75dfa3acafb78005c9d1bdb2fb116c01620bd6dd868bd9363f139b1c2a8dc50018a10d8a2a86ad23b49c09815e92c10d211360e
   languageName: node
   linkType: hard
 
-"@prisma/get-platform@npm:5.19.0-dev.13":
-  version: 5.19.0-dev.13
-  resolution: "@prisma/get-platform@npm:5.19.0-dev.13"
+"@prisma/get-platform@npm:5.19.0-dev.14":
+  version: 5.19.0-dev.14
+  resolution: "@prisma/get-platform@npm:5.19.0-dev.14"
   dependencies:
-    "@prisma/debug": "npm:5.19.0-dev.13"
-  checksum: 10/27b1388ee346758564cf6af3debdaa6804068f12c8a2086b6a08fb4084acfb2ec348c793af44a4e8c28f004ed49185e4c472f0c7c3cf7ac2258a54e9be989f95
+    "@prisma/debug": "npm:5.19.0-dev.14"
+  checksum: 10/122ff4053eb488adff8dcb3741a2564cbc60d84a24f9c1a214f21e5c79f6586a06303d08879c2eecbe9a38b811b50c80c7c516d23a5b301a61c4ceadc135d175
   languageName: node
   linkType: hard
 
@@ -3332,7 +3332,7 @@ __metadata:
   resolution: "@prisma/react-native@workspace:."
   dependencies:
     "@evilmartians/lefthook": "npm:^1.5.0"
-    "@prisma/client": "npm:5.19.0-dev.13"
+    "@prisma/client": "npm:5.19.0-dev.14"
     "@react-native/eslint-config": "npm:^0.72.2"
     "@tsconfig/react-native": "npm:^3.0.5"
     "@types/jest": "npm:^28.1.2"
@@ -3349,7 +3349,7 @@ __metadata:
     p-retry: "npm:^6.2.0"
     pod-install: "npm:0.2.0"
     prettier: "npm:^2.0.5"
-    prisma: "npm:5.19.0-dev.13"
+    prisma: "npm:5.19.0-dev.14"
     react: "npm:18.2.0"
     react-native: "npm:0.73.2"
     react-native-builder-bob: "npm:0.23.2"
@@ -13083,18 +13083,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prisma@npm:5.19.0-dev.13":
-  version: 5.19.0-dev.13
-  resolution: "prisma@npm:5.19.0-dev.13"
+"prisma@npm:5.19.0-dev.14":
+  version: 5.19.0-dev.14
+  resolution: "prisma@npm:5.19.0-dev.14"
   dependencies:
-    "@prisma/engines": "npm:5.19.0-dev.13"
+    "@prisma/engines": "npm:5.19.0-dev.14"
     fsevents: "npm:2.3.3"
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     prisma: build/index.js
-  checksum: 10/cc0c718114fd05793410a8615eb75a0e632a28ff8941dd37d46b315271c933548e34ead593a915abea5820922807cb85ddc0340061472cf3fb87cd153aba453f
+  checksum: 10/b2326b1b8b1e1a7c6c710676726feb442babb67771d99b45331902a479a59babc505fbb270e366fa264ab0739b20c67705e5cd973f82dd7bc8fcc13bc17e1d6c
   languageName: node
   linkType: hard
 
@@ -13423,7 +13423,7 @@ __metadata:
     "@babel/core": "npm:^7.20.0"
     "@babel/preset-env": "npm:^7.20.0"
     "@babel/runtime": "npm:^7.20.0"
-    "@prisma/client": "npm:5.19.0-dev.13"
+    "@prisma/client": "npm:5.19.0-dev.14"
     "@react-native/babel-preset": "npm:^0.73.18"
     "@react-native/metro-config": "npm:^0.73.2"
     "@react-native/typescript-config": "npm:^0.73.1"
@@ -13435,7 +13435,7 @@ __metadata:
     jest: "npm:^29"
     nativewind: "npm:^4.0.23"
     pod-install: "npm:0.2.0"
-    prisma: "npm:5.19.0-dev.13"
+    prisma: "npm:5.19.0-dev.14"
     react: "npm:18.2.0"
     react-native: "npm:0.73.2"
     react-native-http-bridge-refurbished: "npm:^1.2.9"
