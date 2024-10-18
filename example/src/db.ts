@@ -8,6 +8,7 @@ import Chance from 'chance';
 const chance = new Chance();
 
 const basePrisma = new PrismaClient({
+  datasourceUrl: 'file:./my-custom.db',
   log: [{ emit: 'event', level: 'query' }],
 });
 
