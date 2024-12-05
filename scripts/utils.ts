@@ -14,8 +14,9 @@ export function ensureNpmTag(str: string): asserts str is NpmTag {
   }
 }
 
-export function readVersionFile(file: VersionFile): Promise<string> {
-  return fs.readFile(versionFilePath(file), 'utf8');
+export async function readVersionFile(file: VersionFile): Promise<string> {
+  const version = await fs.readFile(versionFilePath(file), 'utf8');
+  return version.trim();
 }
 
 export function writeVersionFile(
