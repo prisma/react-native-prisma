@@ -50,6 +50,14 @@ PRISMA_MIGRATIONS="../node_modules/@prisma/react-native/copy-migrations.sh" # Ad
 /bin/sh -c "$WITH_ENVIRONMENT $PRISMA_MIGRATIONS $REACT_NATIVE_XCODE" # Add it to the list of running scripts
 ```
 
+#### Run Pod Install
+
+Make sure you run `pod-install` to install the native dependencies.
+
+```bash
+npx pod-install
+```
+
 ### Android
 
 For Android you need to modify your apps `app/Build.gradle`. Add the following at the top of the file.
