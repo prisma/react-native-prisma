@@ -1,0 +1,11 @@
+CompileFlags:
+  Add:
+    - -Wall
+    - -Wextra
+    - --std=c++20
+    - -I/Users/aqrln/prisma/react-native-prisma/cpp
+    - -I/Users/aqrln/prisma/react-native-prisma/engines/ios/QueryEngine.xcframework/ios-arm64/Headers
+    - -I/Users/aqrln/prisma/react-native-prisma/example/ios/Pods/hermes-engine/destroot/include
+    - -I/Users/aqrln/prisma/react-native-prisma/example/ios/Pods/Headers/Public
+    - -I/Users/aqrln/prisma/react-native-prisma/example/ios/Pods/Headers/Private
+    - -I/Users/aqrln/prisma/react-native-prisma/node_modules/react-native/ReactCommon/callinvoker

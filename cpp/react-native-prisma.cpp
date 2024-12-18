@@ -48,6 +48,7 @@ void install_cxx(jsi::Runtime &rt,
     std::string log_level =
         params.getProperty(rt, "logLevel").asString(rt).utf8(rt);
     bool log_queries = params.getProperty(rt, "logQueries").asBool();
+    bool enable_tracing = params.getProperty(rt, "enableTracing").asBool();
     std::shared_ptr<jsi::Value> js_log_callback =
         std::make_shared<jsi::Value>(params.getProperty(rt, "logCallback"));
     bool ignore_env_var_errors =
@@ -63,6 +64,7 @@ void install_cxx(jsi::Runtime &rt,
                            .base_path = base_path.c_str(),
                            .log_level = log_level.c_str(),
                            .log_queries = log_queries,
+                           .enable_tracing = enable_tracing,
                            .datasource_overrides = datasource_overrides.c_str(),
                            .env = env.c_str(),
                            .ignore_env_var_errors = ignore_env_var_errors,
@@ -98,14 +100,15 @@ void install_cxx(jsi::Runtime &rt,
     return jsi::Object::createFromHostObject(rt, engine);
   });
 
-  auto connect = HOSTFN("connect", 2) {
+  auto connect = HOSTFN("connect", 3) {
     std::shared_ptr<QueryEngineHostObject> queryEngineHostObject =
         args[0].asObject(rt).asHostObject<QueryEngineHostObject>(rt);
     std::string trace = args[1].asString(rt).utf8(rt);
+    std::string request_id = args[2].asString(rt).utf8(rt);
     char *error_ptr;
 
     int result = prisma_connect(queryEngineHostObject->engine, trace.c_str(),
-                                &error_ptr);
+                                request_id.c_str(), &error_ptr);
     if (result != PRISMA_OK) {
       std::string error_message(error_ptr);
       free(error_ptr);
@@ -114,15 +117,16 @@ void install_cxx(jsi::Runtime &rt,
     return {};
   });
 
-  auto execute = HOSTFN("execute", 4) {
+  auto execute = HOSTFN("execute", 5) {
     std::shared_ptr<QueryEngineHostObject> queryEngineHostObject =
         args[0].asObject(rt).asHostObject<QueryEngineHostObject>(rt);
     std::string body = args[1].asString(rt).utf8(rt);
     std::string trace = args[2].asString(rt).utf8(rt);
     std::string tx_id;
-    if (count > 3 && args[3].isString()) {
+    if (args[3].isString()) {
       tx_id = args[3].asString(rt).utf8(rt);
     }
+    std::string request_id = args[4].asString(rt).utf8(rt);
 
     auto promise_constructor = rt.global().getPropertyAsFunction(rt, "Promise");
 
@@ -131,17 +135,19 @@ void install_cxx(jsi::Runtime &rt,
       auto reject = std::make_shared<jsi::Value>(rt, args[1]);
 
       auto task = [&rt, &queryEngineHostObject, body = std::move(body),
-                   trace = std::move(trace), tx_id = std::move(tx_id), resolve,
-                   reject]() {
+                   trace = std::move(trace), tx_id = std::move(tx_id),
+                   request_id = std::move(request_id), resolve, reject]() {
         const char *response;
         char *error_ptr;
 
         if (!tx_id.empty()) {
           response = prisma_query(queryEngineHostObject->engine, body.c_str(),
-                                  trace.c_str(), tx_id.c_str(), &error_ptr);
+                                  trace.c_str(), tx_id.c_str(),
+                                  request_id.c_str(), &error_ptr);
         } else {
           response = prisma_query(queryEngineHostObject->engine, body.c_str(),
-                                  trace.c_str(), nullptr, &error_ptr);
+                                  trace.c_str(), nullptr, request_id.c_str(),
+                                  &error_ptr);
         }
 
         call_invoker->invokeAsync([&rt, response = std::move(response),
@@ -170,14 +176,16 @@ void install_cxx(jsi::Runtime &rt,
     return promise;
   });
 
-  auto start_transaction = HOSTFN("startTransaction", 3) {
+  auto start_transaction = HOSTFN("startTransaction", 4) {
     std::shared_ptr<QueryEngineHostObject> queryEngineHostObject =
         args[0].asObject(rt).asHostObject<QueryEngineHostObject>(rt);
     std::string body = args[1].asString(rt).utf8(rt);
     std::string trace = args[2].asString(rt).utf8(rt);
+    std::string request_id = args[3].asString(rt).utf8(rt);
 
-    const char *response = prisma_start_transaction(
-        queryEngineHostObject->engine, body.c_str(), trace.c_str());
+    const char *response =
+        prisma_start_transaction(queryEngineHostObject->engine, body.c_str(),
+                                 trace.c_str(), request_id.c_str());
 
     if (response == nullptr) {
       throw std::runtime_error("prisma engine did not start transaction");
@@ -186,14 +194,16 @@ void install_cxx(jsi::Runtime &rt,
     return jsi::String::createFromUtf8(rt, std::string(response));
   });
 
-  auto commit_transaction = HOSTFN("commitTransaction", 3) {
+  auto commit_transaction = HOSTFN("commitTransaction", 4) {
     std::shared_ptr<QueryEngineHostObject> queryEngineHostObject =
         args[0].asObject(rt).asHostObject<QueryEngineHostObject>(rt);
     std::string body = args[1].asString(rt).utf8(rt);
     std::string trace = args[2].asString(rt).utf8(rt);
+    std::string request_id = args[3].asString(rt).utf8(rt);
 
-    const char *response = prisma_commit_transaction(
-        queryEngineHostObject->engine, body.c_str(), trace.c_str());
+    const char *response =
+        prisma_commit_transaction(queryEngineHostObject->engine, body.c_str(),
+                                  trace.c_str(), request_id.c_str());
 
     if (response == nullptr) {
       throw std::runtime_error("prisma engine did not commit transaction");
@@ -202,14 +212,16 @@ void install_cxx(jsi::Runtime &rt,
     return jsi::String::createFromUtf8(rt, std::string(response));
   });
 
-  auto rollback_transaction = HOSTFN("rollbackTransaction", 3) {
+  auto rollback_transaction = HOSTFN("rollbackTransaction", 4) {
     std::shared_ptr<QueryEngineHostObject> queryEngineHostObject =
         args[0].asObject(rt).asHostObject<QueryEngineHostObject>(rt);
     std::string body = args[1].asString(rt).utf8(rt);
     std::string trace = args[2].asString(rt).utf8(rt);
+    std::string request_id = args[3].asString(rt).utf8(rt);
 
-    const char *response = prisma_rollback_transaction(
-        queryEngineHostObject->engine, body.c_str(), trace.c_str());
+    const char *response =
+        prisma_rollback_transaction(queryEngineHostObject->engine, body.c_str(),
+                                    trace.c_str(), request_id.c_str());
 
     if (response == nullptr) {
       throw std::runtime_error("prisma engine did not rollback transaction");
@@ -218,14 +230,16 @@ void install_cxx(jsi::Runtime &rt,
     return jsi::String::createFromUtf8(rt, std::string(response));
   });
 
-  auto disconnect = HOSTFN("disconnect", 2) {
+  auto disconnect = HOSTFN("disconnect", 3) {
     std::shared_ptr<QueryEngineHostObject> queryEngineHostObject =
         args[0].asObject(rt).asHostObject<QueryEngineHostObject>(rt);
     std::string trace = args[1].asString(rt).utf8(rt);
+    std::string request_id = args[2].asString(rt).utf8(rt);
 
     engine_map.erase(queryEngineHostObject->id);
 
-    int res = prisma_disconnect(queryEngineHostObject->engine, trace.c_str());
+    int res = prisma_disconnect(queryEngineHostObject->engine, trace.c_str(),
+                                request_id.c_str());
 
     if (res != PRISMA_OK) {
       throw std::runtime_error("Could not disconnect from prisma query engine");
@@ -249,6 +263,33 @@ void install_cxx(jsi::Runtime &rt,
     return {};
   });
 
+  auto trace = HOSTFN("trace", 1) {
+    std::shared_ptr<QueryEngineHostObject> queryEngineHostObject =
+        args[0].asObject(rt).asHostObject<QueryEngineHostObject>(rt);
+    std::string request_id = args[0].asString(rt).utf8(rt);
+    char *error_ptr;
+
+    const char *response = prisma_trace(queryEngineHostObject->engine,
+                                        request_id.c_str(), &error_ptr);
+
+    if (error_ptr != nullptr) {
+      auto error_string = std::string(error_ptr);
+      free(error_ptr);
+      throw std::runtime_error(error_string);
+    }
+
+    std::string response_string;
+
+    if (response != nullptr) {
+      response_string = std::string(response);
+      free((void *)response);
+    } else {
+      response_string = std::string("{traces:[],logs:[]}");
+    }
+
+    return jsi::String::createFromUtf8(rt, response_string);
+  });
+
   jsi::Object module = jsi::Object(rt);
   module.setProperty(rt, "create", std::move(create));
   module.setProperty(rt, "connect", std::move(connect));
@@ -260,6 +301,7 @@ void install_cxx(jsi::Runtime &rt,
   module.setProperty(rt, "disconnect", std::move(disconnect));
   module.setProperty(rt, "applyPendingMigrations",
                      std::move(apply_pending_migrations));
+  module.setProperty(rt, "trace", std::move(trace));
 
   rt.global().setProperty(rt, "__PrismaProxy", std::move(module));
 }
