@@ -4,6 +4,15 @@ const server = new BridgeServer('http_service', true);
 let engine: any;
 let logs: string[] = [];
 
+let NEXT_REQUEST_ID = 1n;
+const MAX_REQUEST_ID = 2n ** 64n - 1n;
+
+function nextRequestId(): string {
+  const requestId = NEXT_REQUEST_ID.toString();
+  NEXT_REQUEST_ID = (NEXT_REQUEST_ID + 1n) % MAX_REQUEST_ID;
+  return requestId;
+}
+
 async function sleep(ms: number): Promise<void> {
   return new Promise<void>((resolve) => {
     setTimeout(resolve, ms);
@@ -24,6 +33,7 @@ server.post('/connect', async (req, res) => {
     datamodel: schema,
     logLevel: 'ERROR',
     logQueries: true,
+    enableTracing: false,
     env: {},
     ignoreEnvVarErrors: true,
     datasourceOverrides: {},
@@ -32,7 +42,7 @@ server.post('/connect', async (req, res) => {
     },
   });
 
-  __PrismaProxy!.connect(engine, '{}');
+  __PrismaProxy!.connect(engine, '{}', nextRequestId());
 
   res.send(200, 'application/json', '{}');
 });
@@ -42,7 +52,13 @@ server.post('/query', async (req, res) => {
   const body: string = req.postData?.body;
   // @ts-expect-error
   const txId: string = req.postData?.txId;
-  const queryRes = await __PrismaProxy!.execute(engine, body, '', txId);
+  const queryRes = await __PrismaProxy!.execute(
+    engine,
+    body,
+    '',
+    txId,
+    nextRequestId()
+  );
   // sleep for a bit to allow for logs to be collected
   await sleep(1);
   res.send(
@@ -57,7 +73,12 @@ server.post('/start_transaction', async (req, res) => {
   const body: string = req.postData?.body;
   // @ts-expect-error
   const trace: string = req.postData?.trace;
-  const queryRes = __PrismaProxy!.startTransaction(engine, body, trace);
+  const queryRes = __PrismaProxy!.startTransaction(
+    engine,
+    body,
+    trace,
+    nextRequestId()
+  );
   res.send(200, 'application/text', JSON.stringify(queryRes));
 });
 
@@ -66,7 +87,12 @@ server.post('/commit_transaction', async (req, res) => {
   const txId: string = req.postData?.txId;
   // @ts-expect-error
   const trace: string = req.postData?.trace;
-  const queryRes = __PrismaProxy!.commitTransaction(engine, txId, trace);
+  const queryRes = __PrismaProxy!.commitTransaction(
+    engine,
+    txId,
+    trace,
+    nextRequestId()
+  );
   res.send(200, 'application/text', JSON.stringify(queryRes));
 });
 
@@ -75,7 +101,12 @@ server.post('/rollback_transaction', async (req, res) => {
   const txId: string = req.postData?.txId;
   // @ts-expect-error
   const trace: string = req.postData?.trace;
-  const queryRes = __PrismaProxy!.rollbackTransaction(engine, txId, trace);
+  const queryRes = __PrismaProxy!.rollbackTransaction(
+    engine,
+    txId,
+    trace,
+    nextRequestId()
+  );
   res.send(200, 'application/text', JSON.stringify(queryRes));
 });
 
@@ -86,7 +117,7 @@ server.post('/disconnect', async (req, res) => {
   }
   // @ts-expect-error
   const trace: string = req.postData?.trace;
-  __PrismaProxy!.disconnect(engine, trace);
+  __PrismaProxy!.disconnect(engine, trace, nextRequestId());
   engine = null;
   res.send(200, 'application/text', '');
 });
