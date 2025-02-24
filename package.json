@@ -89,7 +89,6 @@
     "react": "18.2.0",
     "react-native": "0.73.2",
     "react-native-builder-bob": "0.23.2",
-    "react-native-quick-base64": "2.0.8",
     "react-native-url-polyfill": "2.0.0",
     "tsx": "^4.7.3",
     "typescript": "^5.4.5",
@@ -103,8 +102,7 @@
     "@prisma/client": "*",
     "expo": ">=49.0.0",
     "react": "*",
-    "react-native": "*",
-    "react-native-quick-base64": "*"
+    "react-native": "*"
   },
   "workspaces": [
     "example"
@@ -176,7 +174,6 @@
     }
   },
   "dependencies": {
-    "react-native-quick-base64": "^2.0.8",
     "react-native-url-polyfill": "^2.0.0"
   }
 }

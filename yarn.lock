@@ -3353,7 +3353,6 @@ __metadata:
     react: "npm:18.2.0"
     react-native: "npm:0.73.2"
     react-native-builder-bob: "npm:0.23.2"
-    react-native-quick-base64: "npm:2.0.8"
     react-native-url-polyfill: "npm:2.0.0"
     tsx: "npm:^4.7.3"
     typescript: "npm:^5.4.5"
@@ -3364,7 +3363,6 @@ __metadata:
     expo: ">=49.0.0"
     react: "*"
     react-native: "*"
-    react-native-quick-base64: "*"
   peerDependenciesMeta:
     expo:
       optional: true
@@ -13444,7 +13442,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-native-quick-base64@npm:2.0.8, react-native-quick-base64@npm:^2.0.8":
+"react-native-quick-base64@npm:^2.0.8":
   version: 2.0.8
   resolution: "react-native-quick-base64@npm:2.0.8"
   dependencies:

@@ -5,7 +5,7 @@ A Prisma engine adaptation for React Native. Please note that this is in [Early 
 ## Installation
 
 ```
-npm i --save --save-exact @prisma/client@latest @prisma/react-native@latest react-native-quick-base64
+npm i --save --save-exact @prisma/client@latest @prisma/react-native@latest
 npx expo prebuild --clean
 ```
 

@@ -9,7 +9,6 @@ import {
   View,
 } from 'react-native';
 import { NetworkInfo } from 'react-native-network-info';
-import { atob, btoa } from 'react-native-quick-base64';
 
 import 'react-native-url-polyfill/auto';
 import '../global.css';
@@ -25,8 +24,6 @@ import {
 } from './db';
 
 // global.TextEncoder = require('text-encoding').TextEncoder;
-global.atob = atob;
-global.btoa = btoa;
 
 export default function App() {
   const [prismaTime, setPrismaTime] = useState(0);
