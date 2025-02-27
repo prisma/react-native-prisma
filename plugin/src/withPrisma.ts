@@ -20,7 +20,7 @@ const withPrismaPlugin: ConfigPlugin<void> = (config) => {
   try {
     cfg = withPrismaIOS(cfg);
   } catch (e) {
-    WarningAggregator.addWarningAndroid(
+    WarningAggregator.addWarningIOS(
       'prisma-expo',
       `There was a problem configuring prisma for expo in your native iOS project ${e}`
     );
