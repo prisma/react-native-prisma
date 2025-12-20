@@ -70,7 +70,6 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./app.db"
 }
 
 // Your data model
@@ -79,6 +78,25 @@ model User {
   id           Int     @id @default(autoincrement())
   name         String
 }
+```
+
+Now install required dependencies
+
+```bash
+npm install @prisma/config
+```
+
+Finally update prisma.config.ts
+
+```ts
+import { defineConfig } from "@prisma/config";
+
+export default defineConfig({
+  schema: "schema.prisma",
+  datasource: {
+    url: "file:./app.db",
+  },
+});
 ```
 
 You can create the database file and initial migration using Prisma migrate:
