@@ -99,8 +99,9 @@ npx prisma@latest generate
 This package contains an extension to the Prisma client that allows you to use reactive queries. Use at your own convenience and care since it might introduce large re-renders in your app.
 
 ```ts
-import { PrismaClient } from '@prisma/client/react-native';
-import { reactiveHooksExtension } from '@prisma/react-native';
+import { PrismaClient } from "@prisma/client";
+import { reactiveHooksExtension } from "@prisma/react-native";
+import "@prisma/react-native";
 
 const baseClient = new PrismaClient();
 
