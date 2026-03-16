@@ -7,7 +7,7 @@ A Prisma engine adaptation for React Native. Please note that this is in [Early 
 Install `@prisma/client`, `@prisma/react-native` and the `react-native-quick-base64` dependency:
 
 ```
-npm i --save --save-exact @prisma/client@latest @prisma/react-native@latest react-native-quick-base64
+npm i --save --save-exact @prisma/client@latest @prisma/react-native@latest
 ```
 
 To ensure migration files are copied into the app bundle you need to either enable the Expo plugin or configure ios and Android manually:
