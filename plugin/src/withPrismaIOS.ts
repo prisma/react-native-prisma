@@ -26,13 +26,10 @@ export function modifyExistingXcodeBuildScript(script: BuildPhase): void {
 }
 
 export function addPrismMigrationScriptCopy(script: string): string {
-  return (
-    script +
-    `
-    
-    PRISMA_MIGRATIONS="../node_modules/@prisma/react-native/copy-migrations.sh"
-    chmod a+x ../node_modules/@prisma/react-native/copy-migrations.sh
-
-    /bin/sh -c "$PRISMA_MIGRATIONS"`
-  );
+  return [
+    script,
+    `PRISMA_MIGRATIONS=\`"$NODE_BINARY" --print "require('path').dirname(require.resolve('@prisma/react-native/package.json')) + '/copy-migrations.sh'"\``,
+    'chmod a+x "$PRISMA_MIGRATIONS"',
+    '/bin/sh -c "$PRISMA_MIGRATIONS"',
+  ].join('\n');
 }
