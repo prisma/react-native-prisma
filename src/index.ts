@@ -53,35 +53,49 @@ type PrismaCreateOptions = {
   ignoreEnvVarErrors: boolean;
   datasourceOverrides: object | string;
   env: object | string;
+  enableTracing: boolean;
 };
 
 type QueryEngineObject = object;
 
 type PrismaProxy = {
   create: (options: PrismaCreateOptions) => QueryEngineObject;
-  connect: (engine: QueryEngineObject, trace: string) => void;
+  connect: (
+    engine: QueryEngineObject,
+    trace: string,
+    requestId: string
+  ) => void;
   execute: (
     engine: QueryEngineObject,
     body: string,
     headers: string,
-    txId: string
+    txId: string,
+    requestId: string
   ) => Promise<string>;
   startTransaction: (
     engine: QueryEngineObject,
     body: string,
-    hdears: string
+    hdears: string,
+    requestId: string
   ) => string;
   commitTransaction: (
     engine: QueryEngineObject,
     txId: string,
-    headers: string
+    headers: string,
+    requestId: string
   ) => string;
   rollbackTransaction: (
     engine: QueryEngineObject,
     txId: string,
-    headers: string
+    headers: string,
+    requestId: string
   ) => string;
-  disconnect: (engine: QueryEngineObject, headers: string) => void;
+  disconnect: (
+    engine: QueryEngineObject,
+    headers: string,
+    requestId: string
+  ) => void;
   pushSchema: (engine: QueryEngineObject, schema: string) => void;
   applyPendingMigrations: (engine: QueryEngineObject) => void;
+  trace: (requestId: string) => string | null;
 };
