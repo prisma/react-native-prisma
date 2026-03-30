@@ -7,7 +7,7 @@ on:
         type: string
         required: true
       version:
-        description: npm version to publish
+        description: client version to update to and publish
         type: string
         required: true
     secrets:
@@ -19,10 +19,14 @@ on:
     inputs:
       npmTag:
         description: npm tag to publish to
-        type: string
+        type: choice
+        options:
+          - latest
+          - dev
+          - integration
         required: true
       version:
-        description: npm version to publish
+        description: client version to update to and publish
         type: string
         required: true
 
@@ -97,7 +101,9 @@ jobs:
         run: yarn npm publish --tag "$NPM_TAG"
 
       - name: Push
-        run: git push origin main
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: git push origin "$GITHUB_REF"
 
   notify-on-failure:
     name: Notify on publish failure
