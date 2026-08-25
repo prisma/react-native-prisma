@@ -1,182 +1,114 @@
 {
   "name": "@prisma/react-native",
-  "version": "6.1.0-dev.17",
-  "description": "Prisma for react-native",
+  "version": "7.9.1",
+  "description": "Synchronous Prisma 7 client for React Native and Expo SQLite",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
-  "types": "lib/typescript/src/index.d.ts",
+  "types": "lib/typescript/commonjs/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
+  "bin": {
+    "prisma-react-native": "scripts/prepare-client.cjs"
+  },
+  "exports": {
+    ".": {
+      "react-native": "./src/index.ts",
+      "import": {
+        "types": "./lib/typescript/module/index.d.ts",
+        "default": "./lib/module/index.js"
+      },
+      "require": {
+        "types": "./lib/typescript/commonjs/index.d.ts",
+        "default": "./lib/commonjs/index.js"
+      }
+    }
+  },
   "files": [
     "src",
     "lib",
-    "android",
-    "ios",
-    "cpp",
-    "*.podspec",
-    "engines",
-    "!ios/build",
-    "!android/build",
-    "!android/gradle",
-    "!android/gradlew",
-    "!android/gradlew.bat",
-    "!android/local.properties",
     "!**/__tests__",
     "!**/__fixtures__",
     "!**/__mocks__",
     "!**/.*",
-    "copy-migrations.sh",
-    "react-native-prisma.gradle",
-    "plugin",
-    "app.plugin.js",
-    "expo.d.ts",
-    "expo.js"
+    "scripts/patch-prisma-runtime.cjs",
+    "scripts/prepare-client.cjs",
+    "scripts/build-native-ios.sh",
+    "expo-module.config.json",
+    "PrismaReactNative.podspec",
+    "ios",
+    "native/include",
+    "native/PrismaQueryCompiler.xcframework"
   ],
   "scripts": {
-    "example": "yarn workspace react-native-prisma-example",
-    "test": "jest",
-    "check-updates": "tsx scripts/check-updates.ts",
-    "bump-client": "tsx scripts/bump-client.ts",
-    "download-engine": "tsx scripts/download-engine.ts",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "yarn download-engine && bob build",
-    "ios:full": "yarn qe:sim && cd example && yarn ios",
-    "clang": "clang-format -i ./cpp/*.cpp ./cpp/*.h && git add .",
-    "ios": "cd example && yarn ios",
-    "android": "cd example && yarn android"
+    "prepare": "bob build",
+    "build:native:ios": "scripts/build-native-ios.sh",
+    "build:release": "bob build && node scripts/obfuscate.cjs lib",
+    "postinstall": "node ./scripts/patch-prisma-runtime.cjs"
   },
   "keywords": [
     "react-native",
-    "ios",
-    "android"
+    "expo",
+    "prisma",
+    "sqlite",
+    "ios"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prisma/react-native-prisma.git"
+    "url": "git+https://github.com/song-react/react-native-prisma.git"
   },
   "author": "Oscar Franco <ospfranco@gmail.com> (https://github.com/ospfranco)",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/prisma/react-native-prisma/issues"
+    "url": "https://github.com/song-react/react-native-prisma/issues"
   },
-  "homepage": "https://github.com/prisma/react-native-prisma#readme",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
-    "access": "public"
-  },
+  "homepage": "https://github.com/song-react/react-native-prisma#readme",
   "devDependencies": {
-    "@evilmartians/lefthook": "^1.5.0",
-    "@prisma/client": "6.1.0-dev.17",
-    "@react-native/eslint-config": "^0.72.2",
-    "@tsconfig/react-native": "^3.0.5",
-    "@types/jest": "^28.1.2",
-    "@types/react": "~17.0.21",
-    "@types/unzipper": "^0.10.9",
-    "clang-format": "^1.8.0",
-    "del-cli": "^5.0.0",
-    "eslint": "^8.4.1",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "expo": "50.0.0",
-    "expo-module-scripts": "^3.4.1",
-    "jest": "^28.1.1",
-    "p-retry": "^6.2.0",
-    "pod-install": "0.2.0",
-    "prettier": "^2.0.5",
-    "prisma": "6.1.0-dev.17",
-    "react": "18.2.0",
-    "react-native": "0.73.2",
-    "react-native-builder-bob": "0.23.2",
-    "react-native-quick-base64": "2.0.8",
-    "react-native-url-polyfill": "2.0.0",
-    "tsx": "^4.7.3",
-    "typescript": "^5.4.5",
-    "unzipper": "^0.11.4",
-    "zx": "^7.2.3"
-  },
-  "resolutions": {
-    "@types/react": "17.0.21"
+    "@prisma/client": "7.9.1",
+    "expo": "58.0.0-canary-20260812-27f94d4",
+    "expo-sqlite": "58.0.0-canary-20260812-27f94d4",
+    "prisma": "7.9.1",
+    "react-native": "0.87.0",
+    "react-native-builder-bob": "0.40.13",
+    "terser": "5.50.0",
+    "typescript": "^5.4.5"
   },
   "peerDependencies": {
-    "@prisma/client": "*",
-    "expo": ">=49.0.0",
-    "react": "*",
-    "react-native": "*",
-    "react-native-quick-base64": "*"
+    "@prisma/client": "^7.9.1",
+    "expo": ">=52.0.0 || >=58.0.0-0 <59.0.0",
+    "expo-sqlite": ">=15.0.0 || >=58.0.0-0 <59.0.0",
+    "react-native": ">=0.76.0"
   },
-  "workspaces": [
-    "example"
-  ],
   "packageManager": "yarn@4.1.1",
   "engines": {
-    "node": ">= 18.0.0"
-  },
-  "jest": {
-    "preset": "react-native",
-    "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules",
-      "<rootDir>/lib/"
-    ]
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@react-native",
-      "prettier"
-    ],
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "quoteProps": "consistent",
-          "singleQuote": true,
-          "tabWidth": 2,
-          "trailingComma": "es5",
-          "useTabs": false
-        }
-      ]
-    }
-  },
-  "eslintIgnore": [
-    "node_modules/",
-    "lib/",
-    "plugin/build"
-  ],
-  "prettier": {
-    "quoteProps": "consistent",
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "useTabs": false
+    "node": ">=22.12.0"
   },
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",
     "targets": [
-      "commonjs",
-      "module",
+      [
+        "commonjs",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
       [
         "typescript",
         {
-          "project": "tsconfig.build.json"
+          "project": "tsconfig.json"
         }
       ]
     ]
   },
-  "codegenConfig": {
-    "name": "RNPrismaSpec",
-    "type": "modules",
-    "jsSrcsDir": "src"
-  },
-  "peerDependenciesMeta": {
-    "expo": {
-      "optional": true
-    }
-  },
   "dependencies": {
-    "react-native-quick-base64": "^2.0.8",
-    "react-native-url-polyfill": "^2.0.0"
+    "@prisma/driver-adapter-utils": "7.9.1",
+    "buffer": "^6.0.3"
   }
 }

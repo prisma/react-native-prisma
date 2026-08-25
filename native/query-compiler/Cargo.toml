@@ -1,0 +1,24 @@
+[package]
+name = "prisma-query-compiler-native"
+version = "7.9.1"
+edition = "2024"
+
+[lib]
+crate-type = ["staticlib", "cdylib"]
+
+[dependencies]
+psl = { git = "https://github.com/prisma/prisma-engines.git", rev = "e922089b7d7502aff4249d5da3420f6fa55fc6ad", features = ["sqlite"] }
+quaint = { git = "https://github.com/prisma/prisma-engines.git", rev = "e922089b7d7502aff4249d5da3420f6fa55fc6ad", features = ["sqlite"] }
+query-compiler = { git = "https://github.com/prisma/prisma-engines.git", rev = "e922089b7d7502aff4249d5da3420f6fa55fc6ad", default-features = false, features = ["sqlite"] }
+query-core = { git = "https://github.com/prisma/prisma-engines.git", rev = "e922089b7d7502aff4249d5da3420f6fa55fc6ad" }
+request-handlers = { git = "https://github.com/prisma/prisma-engines.git", rev = "e922089b7d7502aff4249d5da3420f6fa55fc6ad", features = ["sqlite"] }
+schema = { git = "https://github.com/prisma/prisma-engines.git", rev = "e922089b7d7502aff4249d5da3420f6fa55fc6ad" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "z"
+panic = "abort"
+strip = true
