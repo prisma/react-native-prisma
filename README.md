@@ -1,184 +1,137 @@
-# Early Access: Prisma ORM for React Native and Expo
+# React Native Prisma
 
-A Prisma engine adaptation for React Native. Please note that this is in [Early Access](https://www.prisma.io/docs/orm/more/releases#early-access)
+Prisma 7.9.1 的 iOS 同步客户端。通过 Nitro 调用原生 Query Compiler 和系统 SQLite3，支持 Hermes、无损 BigInt、迁移与同步 CRUD，不依赖 Expo。
 
-## Installation
+## 安装
 
-Install `@prisma/client`, `@prisma/react-native` and the `react-native-quick-base64` dependency:
-
-```
-npm i --save --save-exact @prisma/client@latest @prisma/react-native@latest react-native-quick-base64
-```
-
-To ensure migration files are copied into the app bundle you need to either enable the Expo plugin or configure ios and Android manually:
-
-### Expo
-
-If you are using Expo, you can add the expo plugin to automatically copy migration files. Modify your `app.json` by adding the react-native-prisma plugin:
-
-```json
-{
-  "expo": {
-    // ... The rest of your expo config
-    "plugins": ["@prisma/react-native"]
-  }
-}
+```sh
+bun add --trust @prisma/client@7.9.1 @prisma/react-native@github:song-react/react-native-prisma#release
+bun add -d prisma@7.9.1
 ```
 
-To activate the plugin, run prebuild:
+`prisma`、`@prisma/client` 与本包版本需一致。`--trust` 允许本包通过 `postinstall` 自动接入同步运行时和官方生成器；业务工程无需额外生成器、脚本或补丁。Nitro 原生桥由本包自动安装；Expo SDK 54 及以上会自动链接，无需单独声明。使用 React Native 社区 CLI 时需将 Nitro 加入原生链接配置。安装后需重新编译 App。
 
-```
-npx expo prebuild --clean
-```
+## 生成
 
-The Expo plugin simply configures the Android and ios projects during the prebuild phase. If you are not using Expo, you can do this manually:
-
-
-### iOS
-
-Go into `Xcode` → `Build Phases` → `Bundle React Native Code and images` and modify it so that it looks like this:
-
-![xcode_build_phases](xcode.png)
-
-```bash
-set -e
-
-WITH_ENVIRONMENT="../node_modules/react-native/scripts/xcode/with-environment.sh"
-REACT_NATIVE_XCODE="../node_modules/react-native/scripts/react-native-xcode.sh"
-PRISMA_MIGRATIONS="../node_modules/@prisma/react-native/copy-migrations.sh" # Add this
-
-/bin/sh -c "$WITH_ENVIRONMENT $PRISMA_MIGRATIONS $REACT_NATIVE_XCODE" # Add it to the list of running scripts
-```
-
-### Android
-
-For Android you need to modify your apps `app/Build.gradle`. Add the following at the top of the file.
-
-```groovy
-apply from: "../../node_modules/@prisma/react-native/react-native-prisma.gradle"
-```
-
-## Enable React Native support in your schema file
-
-React Native support is currently a preview feature and has to be activated in your schema.prisma file. You can place this file in the root of the application:
-
-```ts
+```prisma
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["reactNative"]
+  provider = "prisma-client"
+  output   = "../node_modules/@prisma/react-native/generated"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./app.db"
 }
-
-// Your data model
 
 model User {
-  id           Int     @id @default(autoincrement())
-  name         String
+  id   Int    @id @default(autoincrement())
+  name String
 }
 ```
 
-You can create the database file and initial migration using Prisma migrate:
+保留普通 Prisma 脚本：
 
-```
-npx prisma@latest migrate dev
-```
-
-
-you can now generate the Prisma Client like this:
-
-```
-npx prisma@latest generate
-```
-
-## Reactive queries
-
-This package contains an extension to the Prisma client that allows you to use reactive queries. Use at your own convenience and care since it might introduce large re-renders in your app.
-
-```ts
-import { PrismaClient } from '@prisma/client/react-native';
-import { reactiveHooksExtension } from '@prisma/react-native';
-
-const baseClient = new PrismaClient();
-
-export const extendedClient = baseClient.$extends(reactiveHooksExtension());
-```
-
-Then in your React component you can use the hook:
-
-```tsx
-import { Text } from 'react-native';
-import { extendedClient } from './myDbModule';
-
-export default function App {
-
-  // Will automatically re-render the component with new data
-  const users = extendedClient.user.useFindMany();
-
-  return (
-    <Text>{ users }</Text>
-  )
-}
-```
-
-Bear in mind, for the reactive queries to work you have to use the extended client to modify the data:
-
-```ts
-extendedClient.user.create({ ...userData });
-```
-
-There are several hooks you can use for your reactive queries:
-
-```ts
-useFindMany();
-useFindFirst();
-useFindUnique();
-```
-
-### Non hook reactive queries
-
-It is also possible to use callbacks for this queries in case you are not using hooks, but you still want to get notified when data changes
-
-```ts
-import { PrismaClient } from '@prisma/client/react-native';
-import { reactiveQueriesExtension } from '@prisma/react-native';
-
-const baseClient = new PrismaClient();
-
-export const extendedClient = baseClient.$extends(reactiveQueriesExtension());
-```
-
-## Applying migrations
-
-On application start you need to run the migrations to make sure the database is in a consistent state with your Prisma generated client:
-
-```ts
-import '@prisma/react-native';
-import { PrismaClient } from '@prisma/client/react-native';
-
-const baseClient = new PrismaClient();
-
-async function initializeDb() {
-  try {
-    baseClient.$applyPendingMigrations();
-  } catch (e) {
-    console.error(`failed to apply migrations: ${e}`);
-    throw new Error(
-      'Applying migrations failed, your app is now in an inconsistent state. We cannot guarantee safety, it is now your responsibility to reset the database or tell the user to re-install the app'
-    );
+```json
+{
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio"
   }
 }
 ```
 
-Care must be taken to ensure migrations will always succeed. Migrations will be executed on the users device at runtime, and if they fail to run, your application will most likely be unable to work correctly. In such a situation, the only option for the user might be to delete all app data and start over.
+修改 schema 或迁移后执行 `bun db:generate`。生成器会同时嵌入 `migrations/*/migration.sql`，设备端启动时执行迁移；`db push` 只更新开发机数据库。
 
-## Material
+## 使用
 
-🎥 Watch the introduction at App.js here: https://www.youtube.com/watch?v=keZYUjAYSJM
+将数据库与启动 Provider 放在 `components/providers/PrismaProvider.tsx`：
 
-📖 Read the announcement post here: https://www.prisma.io/blog/bringing-prisma-orm-to-react-native-and-expo
+```tsx
+import { PrismaClient, queriesExtension } from '@prisma/client';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 
-📹 Watch Catalin build an app with Prisma and Expo here: https://www.youtube.com/watch?v=65Iqes0lxpQ
+export const db = new PrismaClient().$extends(queriesExtension());
+
+export const PrismaProvider = ({
+  children,
+}: {
+  children: (
+    error: Error | null | undefined,
+    migrate: () => Promise<void>
+  ) => ReactNode;
+}) => {
+  const [error, setError] = useState<Error | null>();
+
+  const migrate = useCallback(async () => {
+    setError(undefined);
+    try {
+      await db.$applyPendingMigrations();
+      setError(null);
+    } catch (_error) {
+      setError(_error instanceof Error ? _error : new Error(String(_error)));
+    }
+  }, []);
+
+  useEffect(() => {
+    void migrate();
+  }, [migrate]);
+
+  return children(error, migrate);
+};
+```
+
+`new PrismaClient()` 默认使用 `Library/app.db`，沿用旧版数据库。`$applyPendingMigrations()` 包含首次连接。Provider 将状态交给 `children(error, migrate)`，由外部渲染：`undefined` 表示加载中，`null` 表示成功，`Error` 表示失败；调用 `migrate()` 重试。
+
+```tsx
+import { Text } from 'react-native';
+import { PrismaProvider } from '../components/providers/PrismaProvider';
+
+<PrismaProvider>
+  {(error, migrate) =>
+    error === undefined ? (
+      <Text>数据库加载中</Text>
+    ) : error === null ? (
+      <Text>数据库已就绪</Text>
+    ) : (
+      <Text onPress={migrate}>数据库初始化失败：{error.message}，点击重试</Text>
+    )
+  }
+</PrismaProvider>;
+```
+
+初始化后直接同步查询：
+
+```ts
+import { db } from '../components/providers/PrismaProvider';
+
+const user = db.user.create({ data: { name: 'Ada' } });
+const users = db.user.findMany();
+```
+
+批量写入使用同步回调事务，出错时整批回滚：
+
+```ts
+db.$transaction(tx => {
+  tx.user.create({ data: { name: 'Ada' } });
+  tx.user.create({ data: { name: 'Lin' } });
+});
+```
+
+回调内通过 `tx` 同步操作模型，不使用 `async` 或 `await`。同步查询立即执行，因此不支持旧的 `$transaction([操作, ...])`。
+
+## 导入与输出目录
+
+Client、模型和同步扩展支持三个入口，指向同一个 Client：
+
+```ts
+import { PrismaClient, queriesExtension, type User } from '@prisma/client';
+// 也可从 @prisma/react-native 或配置的 output 目录导入。
+```
+
+`output` 相对 schema 解析，支持工程内目录、`node_modules` 中的独立目录或能解析当前工程依赖的绝对路径。修改后执行 `prisma generate`，本包与 `@prisma/client` 会自动转发到新目录。不能覆盖已安装的 Prisma 包；自动入口绑定一个 schema。
+
+Demo 的生成目录位于 `node_modules`，无需入库。其他输出目录请加入 `.gitignore`。
+
+`main` 保存源码；`release` 包含编译后的 JS、类型声明和 iPhone / 模拟器原生库，可直接作为 Git 依赖安装。

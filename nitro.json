@@ -1,0 +1,20 @@
+{
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": ["prisma"],
+  "ios": {
+    "iosModuleName": "PrismaReactNative"
+  },
+  "android": {
+    "androidNamespace": ["prisma"],
+    "androidCxxLibName": "PrismaReactNative"
+  },
+  "autolinking": {
+    "PrismaQueryCompiler": {
+      "ios": {
+        "language": "swift",
+        "implementationClassName": "HybridPrismaQueryCompiler"
+      }
+    }
+  },
+  "ignorePaths": ["**/node_modules", "lib"]
+}
